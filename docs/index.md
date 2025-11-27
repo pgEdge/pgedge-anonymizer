@@ -21,10 +21,7 @@ consistency and referential integrity.
 
 ### Installation
 
-Download the latest release for your platform from the
-[releases page](https://github.com/pgEdge/pgedge-anonymizer/releases).
-
-Or build from source:
+Build from source:
 
 ```bash
 git clone https://github.com/pgEdge/pgedge-anonymizer.git
