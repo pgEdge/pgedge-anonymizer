@@ -1,0 +1,31 @@
+# Mexican Cities
+Mexico City, CDMX
+Tijuana, BC
+Ecatepec, MEX
+Leon, GTO
+Puebla, PUE
+Juarez, CHIH
+Guadalajara, JAL
+Zapopan, JAL
+Monterrey, NL
+Nezahualcoyotl, MEX
+Chihuahua, CHIH
+Merida, YUC
+Cancun, QROO
+Saltillo, COAH
+Aguascalientes, AGS
+Hermosillo, SON
+Mexicali, BC
+San Luis Potosi, SLP
+Culiacan, SIN
+Queretaro, QRO
+Morelia, MICH
+Toluca, MEX
+Torreon, COAH
+Acapulco, GRO
+Villahermosa, TAB
+Veracruz, VER
+Tuxtla Gutierrez, CHIS
+Reynosa, TAMPS
+Xalapa, VER
+Mazatlan, SIN

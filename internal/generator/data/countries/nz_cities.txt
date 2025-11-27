@@ -1,0 +1,31 @@
+# New Zealand Cities
+Auckland
+Wellington
+Christchurch
+Hamilton
+Tauranga
+Napier-Hastings
+Dunedin
+Palmerston North
+Nelson
+Rotorua
+New Plymouth
+Whangarei
+Invercargill
+Whanganui
+Gisborne
+Blenheim
+Pukekohe
+Timaru
+Taupo
+Masterton
+Levin
+Ashburton
+Cambridge
+Te Awamutu
+Queenstown
+Oamaru
+Tokoroa
+Greymouth
+Whakatane
+Thames

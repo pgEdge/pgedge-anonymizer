@@ -1,0 +1,31 @@
+# Pakistani Cities
+Karachi
+Lahore
+Faisalabad
+Rawalpindi
+Gujranwala
+Peshawar
+Multan
+Islamabad
+Hyderabad
+Quetta
+Bahawalpur
+Sargodha
+Sialkot
+Sukkur
+Larkana
+Sheikhupura
+Jhang
+Rahim Yar Khan
+Gujrat
+Mardan
+Kasur
+Dera Ghazi Khan
+Sahiwal
+Okara
+Wah Cantonment
+Mingora
+Nawabshah
+Mirpur Khas
+Chiniot
+Kamoke

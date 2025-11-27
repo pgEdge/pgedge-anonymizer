@@ -1,0 +1,31 @@
+# Italian Cities
+Rome
+Milan
+Naples
+Turin
+Palermo
+Genoa
+Bologna
+Florence
+Bari
+Catania
+Venice
+Verona
+Messina
+Padua
+Trieste
+Taranto
+Brescia
+Parma
+Modena
+Reggio Calabria
+Reggio Emilia
+Perugia
+Livorno
+Ravenna
+Cagliari
+Foggia
+Rimini
+Salerno
+Ferrara
+Sassari

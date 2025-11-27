@@ -1,0 +1,21 @@
+# Email domains for anonymization (fictional/example domains)
+example.com
+example.org
+example.net
+test.com
+test.org
+sample.com
+sample.org
+demo.com
+demo.org
+mail.example.com
+email.example.com
+inbox.example.com
+webmail.example.com
+private.example.com
+secure.example.com
+home.example.com
+work.example.com
+office.example.com
+personal.example.com
+business.example.com

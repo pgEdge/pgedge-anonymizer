@@ -1,0 +1,84 @@
+# pgEdge Anonymizer configuration for the anonymizer_template database
+# This configuration anonymizes PII data in a sample e-commerce application
+
+database:
+  host: localhost
+  port: 5432
+  database: anonymizer
+  sslmode: prefer
+
+patterns:
+  default_path: ./pgedge-anonymizer-patterns.yaml
+  user_path: ./examples/custom_patterns.yaml
+  disable_defaults: false
+
+columns:
+  # Customer PII
+  - column: public.customers.first_name
+    pattern: PERSON_FIRST_NAME
+  - column: public.customers.last_name
+    pattern: PERSON_LAST_NAME
+  - column: public.customers.email
+    pattern: EMAIL
+  - column: public.customers.phone
+    pattern: US_PHONE
+  - column: public.customers.mobile_phone
+    pattern: US_PHONE
+  - column: public.customers.date_of_birth
+    pattern: DOB_OVER_18
+  - column: public.customers.ssn
+    pattern: US_SSN
+  - column: public.customers.passport_number
+    pattern: PASSPORT
+
+  # Address PII
+  - column: public.addresses.street_address
+    pattern: ADDRESS
+  - column: public.addresses.city
+    pattern: CITY
+  - column: public.addresses.postal_code
+    pattern: US_ZIP
+
+  # Employee PII
+  - column: public.employees.first_name
+    pattern: PERSON_FIRST_NAME
+  - column: public.employees.last_name
+    pattern: PERSON_LAST_NAME
+  - column: public.employees.email
+    pattern: EMAIL
+  - column: public.employees.phone
+    pattern: US_PHONE
+  - column: public.employees.date_of_birth
+    pattern: DOB_OVER_18
+  - column: public.employees.ssn
+    pattern: US_SSN
+
+  # Payment Method PII
+  - column: public.payment_methods.card_number
+    pattern: CREDIT_CARD
+  - column: public.payment_methods.card_expiry
+    pattern: CREDIT_CARD_EXPIRY
+  - column: public.payment_methods.card_cvv
+    pattern: CREDIT_CARD_CVV
+  - column: public.payment_methods.cardholder_name
+    pattern: PERSON_NAME
+
+  # Customer Notes (contains embedded PII in free text)
+  - column: public.customer_notes.note
+    pattern: LOREMIPSUM
+
+  # Support Tickets (free text may contain PII)
+  - column: public.support_tickets.description
+    pattern: LOREMIPSUM
+
+  # Ticket Comments (free text may contain PII)
+  - column: public.ticket_comments.comment
+    pattern: LOREMIPSUM
+
+  # Audit Log (denormalized PII for history)
+  - column: public.audit_log.changed_by_name
+    pattern: PERSON_NAME
+  - column: public.audit_log.changed_by_email
+    pattern: EMAIL
+  - column: public.audit_log.ip_address
+    pattern: IPV4_ADDRESS

@@ -1,0 +1,52 @@
+# United Kingdom Cities with Counties/Regions
+London, Greater London
+Birmingham, West Midlands
+Manchester, Greater Manchester
+Glasgow, Scotland
+Liverpool, Merseyside
+Leeds, West Yorkshire
+Sheffield, South Yorkshire
+Edinburgh, Scotland
+Bristol, Avon
+Leicester, Leicestershire
+Coventry, West Midlands
+Belfast, Northern Ireland
+Nottingham, Nottinghamshire
+Newcastle upon Tyne, Tyne and Wear
+Southampton, Hampshire
+Cardiff, Wales
+Portsmouth, Hampshire
+Brighton, East Sussex
+Plymouth, Devon
+Stoke-on-Trent, Staffordshire
+Wolverhampton, West Midlands
+Derby, Derbyshire
+Swansea, Wales
+Milton Keynes, Buckinghamshire
+Aberdeen, Scotland
+Norwich, Norfolk
+Sunderland, Tyne and Wear
+Luton, Bedfordshire
+Oxford, Oxfordshire
+Cambridge, Cambridgeshire
+York, North Yorkshire
+Bath, Somerset
+Exeter, Devon
+Canterbury, Kent
+Chester, Cheshire
+Durham, County Durham
+Lancaster, Lancashire
+Lincoln, Lincolnshire
+Winchester, Hampshire
+Worcester, Worcestershire
+Gloucester, Gloucestershire
+Dundee, Scotland
+Inverness, Scotland
+Perth, Scotland
+Stirling, Scotland
+Bangor, Wales
+Newport, Wales
+St Albans, Hertfordshire
+Colchester, Essex
+Ipswich, Suffolk
+Reading, Berkshire

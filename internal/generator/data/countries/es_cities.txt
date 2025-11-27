@@ -1,0 +1,31 @@
+# Spanish Cities
+Madrid
+Barcelona
+Valencia
+Seville
+Zaragoza
+Malaga
+Murcia
+Palma
+Las Palmas
+Bilbao
+Alicante
+Cordoba
+Valladolid
+Vigo
+Gijon
+Hospitalet
+Vitoria
+La Coruna
+Granada
+Elche
+Oviedo
+Terrassa
+Badalona
+Cartagena
+Jerez de la Frontera
+Sabadell
+Mostoles
+Santa Cruz de Tenerife
+Pamplona
+Almeria

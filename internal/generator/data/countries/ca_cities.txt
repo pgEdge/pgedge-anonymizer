@@ -1,0 +1,31 @@
+# Canadian Cities
+Toronto, ON
+Montreal, QC
+Vancouver, BC
+Calgary, AB
+Edmonton, AB
+Ottawa, ON
+Winnipeg, MB
+Quebec City, QC
+Hamilton, ON
+Kitchener, ON
+London, ON
+Victoria, BC
+Halifax, NS
+Oshawa, ON
+Windsor, ON
+Saskatoon, SK
+Regina, SK
+St. Catharines, ON
+Kelowna, BC
+Barrie, ON
+Sherbrooke, QC
+Guelph, ON
+Abbotsford, BC
+Kingston, ON
+Trois-Rivieres, QC
+Milton, ON
+Moncton, NB
+Brantford, ON
+Thunder Bay, ON
+Nanaimo, BC

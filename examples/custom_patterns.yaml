@@ -1,0 +1,129 @@
+# Example custom patterns file for pgEdge Anonymizer
+# This file demonstrates how to define custom format-based patterns.
+#
+# Usage:
+#   pgedge-anonymizer run --config myconfig.yaml --patterns custom_patterns.yaml
+#
+# Format patterns support three types:
+#   - date: Uses strftime format codes
+#   - number: Uses printf format codes
+#   - mask: Uses character placeholders
+
+patterns:
+  # Date patterns using strftime codes
+  # %Y - 4-digit year, %y - 2-digit year
+  # %m - 2-digit month, %d - 2-digit day
+  # %H - 24-hour hour, %I - 12-hour hour
+  # %M - minute, %S - second
+  # %B - full month name, %b - abbreviated month name
+  # %A - full weekday name, %a - abbreviated weekday name
+  # %p - AM/PM, %P - am/pm
+
+  - name: DATE_US_FORMAT
+    format: "%m/%d/%Y"
+    type: date
+    note: US-style date format (MM/DD/YYYY)
+
+  - name: DATE_EU_FORMAT
+    format: "%d/%m/%Y"
+    type: date
+    note: European-style date format (DD/MM/YYYY)
+
+  - name: DATE_ISO_FORMAT
+    format: "%Y-%m-%d"
+    type: date
+    min_year: 1990
+    max_year: 2024
+    note: ISO date format with restricted year range
+
+  - name: DATETIME_FULL
+    format: "%Y-%m-%d %H:%M:%S"
+    type: date
+    note: Full datetime format (YYYY-MM-DD HH:MM:SS)
+
+  - name: DATE_LONG
+    format: "%B %d, %Y"
+    type: date
+    note: Long date format (e.g., "January 15, 2024")
+
+  - name: TIME_12H
+    format: "%I:%M %p"
+    type: date
+    note: 12-hour time format (e.g., "02:30 PM")
+
+  # Number patterns using printf format codes
+  # %d - decimal integer
+  # %08d - zero-padded to 8 digits
+  # %5d - space-padded to 5 digits
+
+  - name: ORDER_NUMBER
+    format: "ORD-%08d"
+    type: number
+    min: 1
+    max: 99999999
+    note: Order number format (ORD-00000001)
+
+  - name: INVOICE_NUMBER
+    format: "INV-%06d"
+    type: number
+    min: 100000
+    max: 999999
+    note: Invoice number format (INV-100000)
+
+  - name: ACCOUNT_ID
+    format: "%010d"
+    type: number
+    min: 1000000000
+    max: 9999999999
+    note: 10-digit account ID
+
+  # Mask patterns using character placeholders
+  # # or 9 - random digit (0-9)
+  # A - random uppercase letter
+  # a - random lowercase letter
+  # X - random uppercase alphanumeric
+  # x - random lowercase alphanumeric
+  # * - random character (letter or digit)
+  # \ - escape next character (literal)
+
+  - name: PRODUCT_SKU
+    format: "SKU-AA-####"
+    type: mask
+    note: Product SKU format (SKU-XX-0000)
+
+  - name: LICENSE_PLATE
+    format: "AAA-####"
+    type: mask
+    note: License plate format (XXX-0000)
+
+  - name: EMPLOYEE_ID
+    format: "EMP-AAA-###"
+    type: mask
+    note: Employee ID format (EMP-XXX-000)
+
+  - name: TRACKING_CODE
+    format: "XXXXXXXXXXXXX"
+    type: mask
+    note: 13-character tracking code
+
+  - name: SERIAL_NUMBER
+    format: "SN\\-AAAA\\-####\\-XX"
+    type: mask
+    note: Serial number with escaped hyphens (SN-XXXX-0000-XX)
+
+  # Auto-detected format types
+  # The type field can be omitted - it will be auto-detected from the format
+
+  - name: AUTO_DATE
+    format: "%Y-%m-%d"
+    note: Auto-detected as date type
+
+  - name: AUTO_NUMBER
+    format: "%05d"
+    min: 1
+    max: 99999
+    note: Auto-detected as number type
+
+  - name: AUTO_MASK
+    format: "##-AAA-##"
+    note: Auto-detected as mask type

@@ -1,0 +1,239 @@
+# Cities for anonymization (City, State format for US)
+New York, NY
+Los Angeles, CA
+Chicago, IL
+Houston, TX
+Phoenix, AZ
+Philadelphia, PA
+San Antonio, TX
+San Diego, CA
+Dallas, TX
+San Jose, CA
+Austin, TX
+Jacksonville, FL
+Fort Worth, TX
+Columbus, OH
+Charlotte, NC
+San Francisco, CA
+Indianapolis, IN
+Seattle, WA
+Denver, CO
+Boston, MA
+Nashville, TN
+Detroit, MI
+Portland, OR
+Memphis, TN
+Louisville, KY
+Baltimore, MD
+Milwaukee, WI
+Albuquerque, NM
+Tucson, AZ
+Fresno, CA
+Sacramento, CA
+Atlanta, GA
+Kansas City, MO
+Miami, FL
+Oakland, CA
+Minneapolis, MN
+Cleveland, OH
+Raleigh, NC
+Tampa, FL
+St. Louis, MO
+Pittsburgh, PA
+Cincinnati, OH
+Orlando, FL
+Richmond, VA
+New Orleans, LA
+Salt Lake City, UT
+Birmingham, AL
+Boise, ID
+Des Moines, IA
+Omaha, NE
+Springfield, IL
+Madison, WI
+Hartford, CT
+Providence, RI
+Buffalo, NY
+Rochester, NY
+Syracuse, NY
+Albany, NY
+Newark, NJ
+Jersey City, NJ
+Trenton, NJ
+Wilmington, DE
+Annapolis, MD
+Charleston, SC
+Columbia, SC
+Savannah, GA
+Tallahassee, FL
+Mobile, AL
+Montgomery, AL
+Jackson, MS
+Little Rock, AR
+Oklahoma City, OK
+Tulsa, OK
+Wichita, KS
+Topeka, KS
+Lincoln, NE
+Sioux Falls, SD
+Fargo, ND
+Billings, MT
+Cheyenne, WY
+Denver, CO
+Colorado Springs, CO
+Santa Fe, NM
+Las Vegas, NV
+Reno, NV
+Boise, ID
+Spokane, WA
+Tacoma, WA
+Eugene, OR
+Anchorage, AK
+Honolulu, HI
+# UK cities
+London, UK
+Birmingham, UK
+Manchester, UK
+Glasgow, UK
+Liverpool, UK
+Leeds, UK
+Sheffield, UK
+Edinburgh, UK
+Bristol, UK
+Cardiff, UK
+Belfast, UK
+Nottingham, UK
+Newcastle, UK
+Leicester, UK
+Southampton, UK
+Brighton, UK
+Oxford, UK
+Cambridge, UK
+York, UK
+Aberdeen, UK
+# Canadian cities
+Toronto, ON
+Montreal, QC
+Vancouver, BC
+Calgary, AB
+Edmonton, AB
+Ottawa, ON
+Winnipeg, MB
+Quebec City, QC
+Hamilton, ON
+Kitchener, ON
+Halifax, NS
+Victoria, BC
+Saskatoon, SK
+Regina, SK
+St. Johns, NL
+Kelowna, BC
+London, ON
+Windsor, ON
+Fredericton, NB
+Charlottetown, PE
+# Indian cities
+Mumbai, India
+Delhi, India
+Bangalore, India
+Hyderabad, India
+Chennai, India
+Kolkata, India
+Pune, India
+Ahmedabad, India
+Jaipur, India
+Lucknow, India
+Chandigarh, India
+Kochi, India
+Indore, India
+Bhopal, India
+Nagpur, India
+# Pakistani cities
+Karachi, Pakistan
+Lahore, Pakistan
+Islamabad, Pakistan
+Rawalpindi, Pakistan
+Faisalabad, Pakistan
+Multan, Pakistan
+Peshawar, Pakistan
+Quetta, Pakistan
+Sialkot, Pakistan
+Gujranwala, Pakistan
+# Chinese cities
+Beijing, China
+Shanghai, China
+Guangzhou, China
+Shenzhen, China
+Chengdu, China
+Hangzhou, China
+Wuhan, China
+Xian, China
+Nanjing, China
+Tianjin, China
+Suzhou, China
+Chongqing, China
+# Japanese cities
+Tokyo, Japan
+Osaka, Japan
+Yokohama, Japan
+Nagoya, Japan
+Sapporo, Japan
+Kobe, Japan
+Kyoto, Japan
+Fukuoka, Japan
+Kawasaki, Japan
+Hiroshima, Japan
+Sendai, Japan
+Nara, Japan
+# French cities
+Paris, France
+Marseille, France
+Lyon, France
+Toulouse, France
+Nice, France
+Nantes, France
+Strasbourg, France
+Montpellier, France
+Bordeaux, France
+Lille, France
+Rennes, France
+Grenoble, France
+# German cities
+Berlin, Germany
+Munich, Germany
+Hamburg, Germany
+Cologne, Germany
+Frankfurt, Germany
+Stuttgart, Germany
+Dusseldorf, Germany
+Leipzig, Germany
+Dresden, Germany
+Hanover, Germany
+Bremen, Germany
+Nuremberg, Germany
+# Italian cities
+Rome, Italy
+Milan, Italy
+Naples, Italy
+Turin, Italy
+Florence, Italy
+Bologna, Italy
+Venice, Italy
+Verona, Italy
+Genoa, Italy
+Palermo, Italy
+Bari, Italy
+Catania, Italy
+# Spanish cities
+Madrid, Spain
+Barcelona, Spain
+Valencia, Spain
+Seville, Spain
+Zaragoza, Spain
+Malaga, Spain
+Bilbao, Spain
+Granada, Spain
+Alicante, Spain
+Cordoba, Spain
+Valladolid, Spain
+Murcia, Spain

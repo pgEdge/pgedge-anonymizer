@@ -1,0 +1,78 @@
+# pgEdge Anonymizer Configuration Example
+#
+# Copy this file to pgedge-anonymizer.yaml and customize for your needs.
+
+# Database connection configuration
+# All fields can be overridden by command-line flags or environment variables.
+# Environment variables: PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD, PGSSLMODE
+database:
+  host: localhost
+  port: 5432
+  database: myapp
+  user: anonymizer
+  password: ""          # Leave empty to use PGPASSWORD or prompt
+  sslmode: prefer       # disable, require, verify-ca, verify-full
+
+  # SSL certificate paths (optional)
+  # sslcert: /path/to/client-cert.pem
+  # sslkey: /path/to/client-key.pem
+  # sslrootcert: /path/to/ca-cert.pem
+
+# Pattern file configuration
+patterns:
+  # Path to default patterns file (optional - will search standard locations)
+  # default_path: /etc/pgedge/pgedge-anonymizer-patterns.yaml
+
+  # Path to user-defined patterns file (optional)
+  # user_path: ./my-patterns.yaml
+
+  # Set to true to disable loading default patterns
+  disable_defaults: false
+
+# Columns to anonymize
+# Format: schema.table.column with corresponding pattern name
+columns:
+
+  # Person information
+  - column: public.users.first_name
+    pattern: PERSON_FIRST_NAME
+
+  - column: public.users.last_name
+    pattern: PERSON_LAST_NAME
+
+  - column: public.users.email
+    pattern: EMAIL
+
+  - column: public.users.phone
+    pattern: US_PHONE
+
+  - column: public.users.date_of_birth
+    pattern: DOB_OVER_18
+
+  # Address information
+  - column: public.addresses.street_address
+    pattern: ADDRESS
+
+  # Financial information
+  - column: public.payments.card_number
+    pattern: CREDIT_CARD
+
+  - column: public.payments.card_expiry
+    pattern: CREDIT_CARD_EXPIRY
+
+  - column: public.payments.card_cvv
+    pattern: CREDIT_CARD_CVV
+
+  # Government IDs
+  - column: public.users.ssn
+    pattern: US_SSN
+
+  # - column: public.users.ni_number
+  #   pattern: UK_NI
+
+  # - column: public.users.nhs_number
+  #   pattern: UK_NHS
+
+  # Notes and text fields
+  # - column: public.notes.content
+  #   pattern: LOREMIPSUM

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make fmt:*)",
+      "Bash(go vet:*)",
+      "Bash(go test:*)",
+      "Bash(make test:*)",
+      "Bash(make lint:*)",
+      "Bash(gofmt:*)",
+      "Bash(go build:*)",
+      "Bash(go clean:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

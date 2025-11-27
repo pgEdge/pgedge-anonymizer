@@ -1,0 +1,140 @@
+# pgEdge Anonymizer CI Workflow
+#
+# This workflow builds the tool, runs tests and linting, sets up a PostgreSQL
+# database with test data, runs the anonymizer against it, and builds the docs.
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: anonymizer
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
+
+      - name: Install golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: --timeout=5m
+
+      - name: Run go fmt check
+        run: |
+          if [ -n "$(gofmt -l .)" ]; then
+            echo "The following files need formatting:"
+            gofmt -l .
+            exit 1
+          fi
+
+      - name: Run go vet
+        run: go vet ./...
+
+      - name: Run tests
+        run: go test -v -race -cover ./...
+
+      - name: Build
+        run: make build
+
+      - name: Load test schema
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: anonymizer
+        run: psql -f examples/test_schema.sql
+
+      - name: Load test data
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: anonymizer
+        run: psql -f examples/test_data.sql
+
+      - name: Run anonymizer against test database
+        env:
+          PGPASSWORD: postgres
+        run: |
+          ./bin/pgedge-anonymizer run \
+            --config examples/test_anonymizer.yaml \
+            --username postgres \
+            --password postgres
+
+      - name: Verify anonymization
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: anonymizer
+        run: |
+          echo "Checking customer data was anonymized..."
+          psql -c "SELECT id, first_name, last_name, email FROM public.customers LIMIT 5;"
+          echo "Checking employee data was anonymized..."
+          psql -c "SELECT id, first_name, last_name, email FROM public.employees LIMIT 5;"
+          echo "Checking credit card data was anonymized..."
+          psql -c "SELECT id, card_number, card_expiry, cardholder_name FROM public.payment_methods LIMIT 5;"
+
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Create virtual environment
+        run: python -m venv venv
+
+      - name: Install dependencies
+        run: |
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build documentation
+        run: |
+          source venv/bin/activate
+          mkdocs build --strict
+
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: site/
+          retention-days: 7

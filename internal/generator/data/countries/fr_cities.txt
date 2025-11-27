@@ -1,0 +1,31 @@
+# French Cities
+Paris
+Marseille
+Lyon
+Toulouse
+Nice
+Nantes
+Montpellier
+Strasbourg
+Bordeaux
+Lille
+Rennes
+Reims
+Saint-Etienne
+Toulon
+Le Havre
+Grenoble
+Dijon
+Angers
+Nimes
+Villeurbanne
+Clermont-Ferrand
+Le Mans
+Aix-en-Provence
+Brest
+Tours
+Amiens
+Limoges
+Perpignan
+Metz
+Besancon

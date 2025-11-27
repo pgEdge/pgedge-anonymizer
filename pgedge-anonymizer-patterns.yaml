@@ -1,0 +1,492 @@
+# pgEdge Anonymizer - Default Patterns
+#
+# This file contains the built-in anonymization patterns for common PII types.
+# Users can create additional patterns in a separate file.
+#
+# Patterns are organized as:
+#   1. Worldwide/Generic patterns (no country prefix)
+#   2. Country-specific patterns (sorted alphabetically by country code)
+
+patterns:
+
+  # ==========================================================================
+  # Worldwide/Generic Patterns
+  # ==========================================================================
+
+  # Address Patterns
+
+  - name: ADDRESS
+    replacement: "123 Street Name, City, ST 12345"
+    note: "Street addresses from any country (diverse worldwide data)"
+
+  - name: CITY
+    replacement: "City Name"
+    note: "City names from any country (diverse worldwide data)"
+
+  - name: WORLDWIDE_ADDRESS
+    replacement: "123 Street Name, City 12345"
+    note: "Street addresses from any country (same as ADDRESS)"
+
+  - name: WORLDWIDE_CITY
+    replacement: "City"
+    note: "City names from any country (same as CITY)"
+
+  - name: WORLDWIDE_POSTCODE
+    replacement: "12345"
+    note: "Postcodes in various international formats (auto-detects format)"
+
+  # Credit Card Patterns
+
+  - name: CREDIT_CARD
+    replacement: "XXXX-XXXX-XXXX-XXXX"
+    note: "Credit card numbers (16 digits, generates valid Luhn)"
+
+  - name: CREDIT_CARD_CVV
+    replacement: "XXX"
+    note: "Credit card CVV (3 or 4 digits)"
+
+  - name: CREDIT_CARD_EXPIRY
+    replacement: "MM/YY"
+    note: "Credit card expiry dates"
+
+  # Date Patterns
+
+  - name: DOB
+    replacement: "YYYY-MM-DD"
+    note: "Date of birth (any age)"
+
+  - name: DOB_OVER_13
+    replacement: "YYYY-MM-DD"
+    note: "Date of birth for someone over 13 years old"
+
+  - name: DOB_OVER_16
+    replacement: "YYYY-MM-DD"
+    note: "Date of birth for someone over 16 years old"
+
+  - name: DOB_OVER_18
+    replacement: "YYYY-MM-DD"
+    note: "Date of birth for someone over 18 years old"
+
+  - name: DOB_OVER_21
+    replacement: "YYYY-MM-DD"
+    note: "Date of birth for someone over 21 years old"
+
+  # Communication Patterns
+
+  - name: EMAIL
+    replacement: "firstname.lastname.abc123@example.com"
+    note: "Email addresses (includes unique hash suffix)"
+
+  - name: INTERNATIONAL_PHONE
+    replacement: "+XX XXXX XXXXXXX"
+    note: "International phone numbers with country code"
+
+  - name: WORLDWIDE_PHONE
+    replacement: "XXXXXXXXXX"
+    note: "Any phone number format (most permissive)"
+
+  # Network Patterns
+
+  - name: HOSTNAME
+    replacement: "server01.example.com"
+    note: "Hostnames and FQDNs (e.g., web01, db.internal)"
+
+  - name: IPV4_ADDRESS
+    replacement: "192.168.1.1"
+    note: "IPv4 addresses (e.g., 10.0.0.1, 192.168.1.100)"
+
+  - name: IPV6_ADDRESS
+    replacement: "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+    note: "IPv6 addresses (full or compressed format)"
+
+  # Person Name Patterns
+
+  - name: PERSON_FIRST_NAME
+    replacement: "FirstName"
+    note: "First names only"
+
+  - name: PERSON_LAST_NAME
+    replacement: "LastName"
+    note: "Last names only"
+
+  - name: PERSON_NAME
+    replacement: "FirstName LastName"
+    note: "Person names (generates realistic first and last names)"
+
+  - name: WORLDWIDE_FIRST_NAME
+    replacement: "FirstName"
+    note: "First names from any country"
+
+  - name: WORLDWIDE_LAST_NAME
+    replacement: "LastName"
+    note: "Last names from any country"
+
+  - name: WORLDWIDE_NAME
+    replacement: "FirstName LastName"
+    note: "Full names from any country"
+
+  # ID/Document Patterns
+
+  - name: PASSPORT
+    replacement: "123456789"
+    note: "Passport numbers (9 alphanumeric characters)"
+
+  # Text Patterns
+
+  - name: LOREMIPSUM
+    replacement: "LOREM"
+    note: "Generate lorem ipsum text matching original length"
+
+  # ==========================================================================
+  # Country-Specific Patterns (sorted by country code)
+  # ==========================================================================
+
+  # AU - Australia
+
+  - name: AU_ADDRESS
+    replacement: "123 Main Street, Sydney 2000"
+    note: "Australian addresses"
+
+  - name: AU_PHONE
+    replacement: "04XX XXX XXX"
+    note: "Australian phone numbers"
+
+  - name: AU_POSTCODE
+    replacement: "2000"
+    note: "Australian postcodes (4 digits)"
+
+  - name: AU_TFN
+    replacement: "123 456 789"
+    note: "Australian Tax File Numbers (9 digits)"
+
+  # CA - Canada
+
+  - name: CA_ADDRESS
+    replacement: "123 Main St, Toronto M5V 3K9"
+    note: "Canadian addresses"
+
+  - name: CA_PHONE
+    replacement: "(XXX) XXX-XXXX"
+    note: "Canadian phone numbers"
+
+  - name: CA_POSTCODE
+    replacement: "K1A 0B1"
+    note: "Canadian postcodes (e.g., K1A 0B1, M5V 3L9)"
+
+  - name: CA_SIN
+    replacement: "123-456-789"
+    note: "Canadian Social Insurance Numbers"
+
+  # DE - Germany
+
+  - name: DE_ADDRESS
+    replacement: "Hauptstraße 123, 10115 Berlin"
+    note: "German addresses"
+
+  - name: DE_PHONE
+    replacement: "+49 XXX XXXXXXXX"
+    note: "German phone numbers"
+
+  - name: DE_POSTCODE
+    replacement: "10115"
+    note: "German postcodes/PLZ (5 digits)"
+
+  - name: DE_STEUERID
+    replacement: "12345678901"
+    note: "German tax identification numbers (11 digits)"
+
+  # ES - Spain
+
+  - name: ES_ADDRESS
+    replacement: "Calle Mayor 123, 28001 Madrid"
+    note: "Spanish addresses"
+
+  - name: ES_NIF
+    replacement: "12345678Z"
+    note: "Spanish NIF/DNI numbers (8 digits + letter)"
+
+  - name: ES_PHONE
+    replacement: "+34 XXX XXX XXX"
+    note: "Spanish phone numbers"
+
+  - name: ES_POSTCODE
+    replacement: "28001"
+    note: "Spanish postcodes (5 digits)"
+
+  # FI - Finland
+
+  - name: FI_ADDRESS
+    replacement: "Mannerheimintie 123, 00100 Helsinki"
+    note: "Finnish addresses"
+
+  - name: FI_HETU
+    replacement: "010190-123A"
+    note: "Finnish personal identity codes (DDMMYY-XXXC)"
+
+  - name: FI_PHONE
+    replacement: "+358 XX XXX XXXX"
+    note: "Finnish phone numbers"
+
+  - name: FI_POSTCODE
+    replacement: "00100"
+    note: "Finnish postcodes (5 digits)"
+
+  # FR - France
+
+  - name: FR_ADDRESS
+    replacement: "123 Rue de Paris, 75001 Paris"
+    note: "French addresses"
+
+  - name: FR_NIR
+    replacement: "1 85 01 75 123 456 00"
+    note: "French social security numbers (NIR, 15 digits)"
+
+  - name: FR_PHONE
+    replacement: "+33 X XX XX XX XX"
+    note: "French phone numbers"
+
+  - name: FR_POSTCODE
+    replacement: "75001"
+    note: "French postcodes (5 digits)"
+
+  # IE - Ireland
+
+  - name: IE_ADDRESS
+    replacement: "123 Main Street, Dublin, D02 X285"
+    note: "Irish addresses"
+
+  - name: IE_PHONE
+    replacement: "+353 XX XXX XXXX"
+    note: "Irish phone numbers"
+
+  - name: IE_POSTCODE
+    replacement: "D02 X285"
+    note: "Irish Eircodes (A9A A9A9 format)"
+
+  - name: IE_PPS
+    replacement: "1234567T"
+    note: "Irish PPS numbers (7 digits + 1-2 letters)"
+
+  # IN - India
+
+  - name: IN_AADHAAR
+    replacement: "1234 5678 9012"
+    note: "Indian Aadhaar numbers (12 digits)"
+
+  - name: IN_ADDRESS
+    replacement: "123 MG Road, Mumbai - 400001"
+    note: "Indian addresses"
+
+  - name: IN_PAN
+    replacement: "ABCDE1234F"
+    note: "Indian PAN numbers (AAAAA9999A format)"
+
+  - name: IN_PHONE
+    replacement: "+91 XXXXX XXXXX"
+    note: "Indian phone numbers"
+
+  - name: IN_POSTCODE
+    replacement: "110001"
+    note: "Indian PIN codes (6 digits)"
+
+  # IT - Italy
+
+  - name: IT_ADDRESS
+    replacement: "Via Roma 123, 00100 Roma"
+    note: "Italian addresses"
+
+  - name: IT_CF
+    replacement: "RSSMRA85M01H501Z"
+    note: "Italian Codice Fiscale (16 alphanumeric)"
+
+  - name: IT_PHONE
+    replacement: "+39 XXX XXX XXXX"
+    note: "Italian phone numbers"
+
+  - name: IT_POSTCODE
+    replacement: "00100"
+    note: "Italian postcodes/CAP (5 digits)"
+
+  # JP - Japan
+
+  - name: JP_ADDRESS
+    replacement: "〒100-0001 東京都 1-2-3"
+    note: "Japanese addresses"
+
+  - name: JP_MYNUMBER
+    replacement: "123456789012"
+    note: "Japanese My Number (12 digits)"
+
+  - name: JP_PHONE
+    replacement: "+81 X-XXXX-XXXX"
+    note: "Japanese phone numbers"
+
+  - name: JP_POSTCODE
+    replacement: "100-0001"
+    note: "Japanese postal codes (XXX-XXXX format)"
+
+  # KR - South Korea
+
+  - name: KR_ADDRESS
+    replacement: "서울시 강남로 123 (06000)"
+    note: "South Korean addresses"
+
+  - name: KR_PHONE
+    replacement: "+82 XX-XXXX-XXXX"
+    note: "South Korean phone numbers"
+
+  - name: KR_POSTCODE
+    replacement: "03000"
+    note: "South Korean postal codes (5 digits)"
+
+  - name: KR_RRN
+    replacement: "850101-1234567"
+    note: "South Korean Resident Registration Numbers"
+
+  # MX - Mexico
+
+  - name: MX_ADDRESS
+    replacement: "Calle Principal #123, 01000 México"
+    note: "Mexican addresses"
+
+  - name: MX_CURP
+    replacement: "AAAA850101HDFRRL01"
+    note: "Mexican CURP (18 alphanumeric)"
+
+  - name: MX_PHONE
+    replacement: "+52 XXX XXX XXXX"
+    note: "Mexican phone numbers"
+
+  - name: MX_POSTCODE
+    replacement: "01000"
+    note: "Mexican postal codes (5 digits)"
+
+  # NO - Norway
+
+  - name: NO_ADDRESS
+    replacement: "Storgata 123, 0001 Oslo"
+    note: "Norwegian addresses"
+
+  - name: NO_FNR
+    replacement: "01019012345"
+    note: "Norwegian national identity numbers (11 digits)"
+
+  - name: NO_PHONE
+    replacement: "+47 XXX XX XXX"
+    note: "Norwegian phone numbers"
+
+  - name: NO_POSTCODE
+    replacement: "0001"
+    note: "Norwegian postal codes (4 digits)"
+
+  # NZ - New Zealand
+
+  - name: NZ_ADDRESS
+    replacement: "123 Queen Street, Auckland 1010"
+    note: "New Zealand addresses"
+
+  - name: NZ_IRD
+    replacement: "12-345-678"
+    note: "New Zealand IRD numbers (8-9 digits)"
+
+  - name: NZ_PHONE
+    replacement: "+64 X XXX XXXX"
+    note: "New Zealand phone numbers"
+
+  - name: NZ_POSTCODE
+    replacement: "1010"
+    note: "New Zealand postal codes (4 digits)"
+
+  # PK - Pakistan
+
+  - name: PK_ADDRESS
+    replacement: "123 Main Road, Islamabad - 44000"
+    note: "Pakistani addresses"
+
+  - name: PK_CNIC
+    replacement: "12345-1234567-1"
+    note: "Pakistani CNIC numbers (13 digits)"
+
+  - name: PK_PHONE
+    replacement: "+92 XXX XXXXXXX"
+    note: "Pakistani phone numbers"
+
+  - name: PK_POSTCODE
+    replacement: "44000"
+    note: "Pakistani postal codes (5 digits)"
+
+  # SE - Sweden
+
+  - name: SE_ADDRESS
+    replacement: "Kungsgatan 123, 100 00 Stockholm"
+    note: "Swedish addresses"
+
+  - name: SE_PHONE
+    replacement: "+46 XX XXX XX XX"
+    note: "Swedish phone numbers"
+
+  - name: SE_PNR
+    replacement: "850101-1234"
+    note: "Swedish personal identity numbers"
+
+  - name: SE_POSTCODE
+    replacement: "100 00"
+    note: "Swedish postal codes (XXX XX format)"
+
+  # SG - Singapore
+
+  - name: SG_ADDRESS
+    replacement: "Blk 123 Orchard Road, Singapore 018956"
+    note: "Singaporean addresses"
+
+  - name: SG_NRIC
+    replacement: "S1234567D"
+    note: "Singaporean NRIC numbers"
+
+  - name: SG_PHONE
+    replacement: "+65 XXXX XXXX"
+    note: "Singaporean phone numbers"
+
+  - name: SG_POSTCODE
+    replacement: "018956"
+    note: "Singaporean postal codes (6 digits)"
+
+  # UK - United Kingdom
+
+  - name: UK_ADDRESS
+    replacement: "123 High Street, London, SW1A 1AA"
+    note: "UK addresses"
+
+  - name: UK_NHS
+    replacement: "XXX XXX XXXX"
+    note: "UK NHS numbers (10 digits)"
+
+  - name: UK_NI
+    replacement: "AB123456C"
+    note: "UK National Insurance numbers"
+
+  - name: UK_PHONE
+    replacement: "+44 XXXX XXXXXX"
+    note: "UK phone numbers (e.g., +44 20 7946 0958)"
+
+  - name: UK_POSTCODE
+    replacement: "SW1A 1AA"
+    note: "UK postcodes (e.g., SW1A 1AA, M1 1AE, B33 8TH)"
+
+  # US - United States
+
+  - name: US_ADDRESS
+    replacement: "123 Main St, New York 10001"
+    note: "US addresses"
+
+  - name: US_PHONE
+    replacement: "XXX-XXX-XXXX"
+    note: "US phone numbers (e.g., 555-123-4567, (555) 123-4567)"
+
+  - name: US_SSN
+    replacement: "XXX-XX-XXXX"
+    note: "US Social Security Numbers"
+
+  - name: US_ZIP
+    replacement: "12345"
+    note: "US ZIP codes (5 or 9 digit formats)"

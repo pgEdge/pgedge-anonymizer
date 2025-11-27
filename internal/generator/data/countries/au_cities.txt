@@ -1,0 +1,31 @@
+# Australian Cities
+Sydney, NSW
+Melbourne, VIC
+Brisbane, QLD
+Perth, WA
+Adelaide, SA
+Gold Coast, QLD
+Newcastle, NSW
+Canberra, ACT
+Wollongong, NSW
+Hobart, TAS
+Geelong, VIC
+Townsville, QLD
+Cairns, QLD
+Darwin, NT
+Toowoomba, QLD
+Ballarat, VIC
+Bendigo, VIC
+Albury, NSW
+Launceston, TAS
+Mackay, QLD
+Rockhampton, QLD
+Bunbury, WA
+Bundaberg, QLD
+Hervey Bay, QLD
+Wagga Wagga, NSW
+Mildura, VIC
+Shepparton, VIC
+Gladstone, QLD
+Port Macquarie, NSW
+Tamworth, NSW
