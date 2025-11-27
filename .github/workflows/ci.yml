@@ -87,7 +87,7 @@ jobs:
         run: |
           ./bin/pgedge-anonymizer run \
             --config examples/test_anonymizer.yaml \
-            --username postgres \
+            --user postgres \
             --password postgres
 
       - name: Verify anonymization
