@@ -181,4 +181,4 @@ Copyright 2025 pgEdge, Inc. All rights reserved.
 ## Support
 
 - [GitHub Issues](https://github.com/pgEdge/pgedge-anonymizer/issues)
-- [Documentation](https://pgedge.github.io/pgedge-anonymizer/)
+- [Documentation](https://github.com/pgEdge/pgedge-anonymizer/blob/main/docs/index.md)
