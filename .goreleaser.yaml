@@ -1,0 +1,90 @@
+# GoReleaser configuration for pgedge-anonymizer
+# https://goreleaser.com/customization/
+
+version: 2
+
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # Run tests before building
+    - go test ./...
+
+builds:
+  - id: pgedge-anonymizer
+    main: ./cmd/pgedge-anonymizer
+    binary: pgedge-anonymizer
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    # Ignore combinations that don't make sense
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X github.com/pgedge/pgedge-anonymizer/internal/version.Version={{.Version}}
+      - -X github.com/pgedge/pgedge-anonymizer/internal/version.BuildTime={{.Date}}
+
+archives:
+  - id: pgedge-anonymizer
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+    files:
+      - LICENSE*
+      - README*
+      - CHANGELOG*
+      - docs/*
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - typo
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: 'Bug Fixes'
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: pgedge
+    name: pgedge-anonymizer
+  draft: false
+  prerelease: auto
+  mode: append
+  header: |
+    ## pgedge-anonymizer {{.Version}}
+
+    Binary downloads are available for multiple platforms below.
+  footer: |
+    **Full Changelog**: https://github.com/pgedge/pgedge-anonymizer/compare/{{ .PreviousTag }}...{{ .Tag }}
