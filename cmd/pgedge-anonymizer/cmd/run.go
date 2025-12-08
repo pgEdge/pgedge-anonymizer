@@ -91,6 +91,11 @@ func init() {
 }
 
 func runAnonymization() error {
+	// Check that a config file was loaded
+	if err := CheckConfigLoaded(); err != nil {
+		return err
+	}
+
 	// Load configuration
 	cfg, err := config.LoadFromViper()
 	if err != nil {

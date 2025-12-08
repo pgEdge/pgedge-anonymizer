@@ -1,1 +1,2 @@
-bin/pgedge-anonymizer
+bin/
+.claude/settings.local.json

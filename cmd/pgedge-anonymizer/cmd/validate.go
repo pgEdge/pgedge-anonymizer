@@ -51,6 +51,11 @@ func init() {
 }
 
 func runValidation() error {
+	// Check that a config file was loaded
+	if err := CheckConfigLoaded(); err != nil {
+		return err
+	}
+
 	fmt.Println("Validating configuration...")
 
 	// Load configuration

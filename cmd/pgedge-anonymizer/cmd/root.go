@@ -4,7 +4,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -13,8 +12,9 @@ import (
 )
 
 var (
-	cfgFile string
-	quiet   bool
+	cfgFile       string
+	quiet         bool
+	configLoadErr error
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -50,6 +50,15 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	// Skip config loading for commands that don't need it
+	// The version and help commands should work without any config file
+	if len(os.Args) > 1 {
+		cmd := os.Args[1]
+		if cmd == "version" || cmd == "help" || cmd == "--help" || cmd == "-h" {
+			return
+		}
+	}
+
 	if cfgFile != "" {
 		// Use config file from the flag
 		viper.SetConfigFile(cfgFile)
@@ -63,11 +72,6 @@ func initConfig() {
 
 		// /etc/pgedge
 		viper.AddConfigPath("/etc/pgedge")
-
-		// Directory containing the binary
-		if exe, err := os.Executable(); err == nil {
-			viper.AddConfigPath(filepath.Dir(exe))
-		}
 	}
 
 	// Read environment variables with PGANON_ prefix
@@ -76,10 +80,27 @@ func initConfig() {
 
 	// Read config file if found
 	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			fmt.Fprintf(os.Stderr, "Error reading config file: %v\n", err)
-		}
+		configLoadErr = err
 	}
+}
+
+// CheckConfigLoaded returns an error if no config file was loaded.
+// Commands that require configuration should call this.
+func CheckConfigLoaded() error {
+	if configLoadErr != nil {
+		if _, ok := configLoadErr.(viper.ConfigFileNotFoundError); ok {
+			if cfgFile != "" {
+				return fmt.Errorf("config file not found: %s", cfgFile)
+			}
+			return fmt.Errorf("no config file found. Create pgedge-anonymizer.yaml or specify one with --config")
+		}
+		// Include which file caused the error if available
+		if file := viper.ConfigFileUsed(); file != "" {
+			return fmt.Errorf("error reading config file %s: %w", file, configLoadErr)
+		}
+		return fmt.Errorf("error reading config file: %w", configLoadErr)
+	}
+	return nil
 }
 
 // versionCmd represents the version command
