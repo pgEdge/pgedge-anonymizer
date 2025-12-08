@@ -50,11 +50,17 @@ copyright: Copyright &copy; 2025 pgEdge, Inc
 repo_url: https://github.com/pgEdge/pgedge-anonymizer
 
 nav:
-  - Getting Started:
+  - pgEdge Anonymizer:
       - Introduction: index.md
-
+      - Best Practices: best_practices.md
+  - Installing pgEdge Anonymizer:
+      - Installing Anonymizer: installation.md
+      - pgEdge Anonymizer Quickstart: quickstart.md
+  - Using pgEdge Anonymizer:
+      - Using Anonymizer: usage.md
   - Reference:
       - Configuration: configuration.md
       - Patterns: patterns.md
-
-  - Changelog: changelog.md
+  - Troubleshooting: troubleshooting.md
+  - pgEdge Anonymizer Release Notes: changelog.md
+  - Licence: LICENCE.md

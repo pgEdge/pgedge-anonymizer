@@ -1,18 +1,24 @@
 # Configuration Reference
 
-This page provides complete documentation for pgEdge Anonymizer
-configuration options.
-
-## Configuration File
-
-By default, pgEdge Anonymizer looks for `pgedge-anonymizer.yaml` in the
-current directory. Use `--config` to specify an alternative path:
+By default, pgEdge Anonymizer looks for a configuration file named `pgedge-anonymizer.yaml` in the current directory. Include the `--config` option to specify an alternative path to the configuration file when you invoke `pgedge-anonymizer`:
 
 ```bash
 pgedge-anonymizer run --config /path/to/config.yaml
 ```
 
-## Database Section
+Anonymizer supports the use of standard PostgreSQL environment variables:
+
+- `PGHOST` - Database host
+- `PGPORT` - Database port
+- `PGDATABASE` - Database name
+- `PGUSER` - Database user
+- `PGPASSWORD` - Database password
+- `PGSSLMODE` - SSL mode
+
+
+
+
+## Database Properties
 
 Configure PostgreSQL connection settings:
 
@@ -26,7 +32,11 @@ database:
   sslmode: prefer
 ```
 
-### Connection Options
+You can use command-line flags to override configuration file settings:
+
+```bash
+pgedge-anonymizer run --host myserver --database production --user admin
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -37,19 +47,19 @@ database:
 | `password` | string | "" | Database password (prompts if empty) |
 | `sslmode` | string | prefer | SSL connection mode |
 
-### SSL Modes
+
+Anonymizer supports the following SSL connection modes:
 
 | Mode | Description |
 |------|-------------|
 | `disable` | No SSL |
-| `prefer` | Use SSL if available (default) |
-| `require` | Require SSL, don't verify certificate |
-| `verify-ca` | Require SSL, verify CA signature |
-| `verify-full` | Require SSL, verify CA and hostname |
+| `prefer` | Use SSL if available (default). |
+| `require` | Require SSL, don't verify certificate. |
+| `verify-ca` | Require SSL, verify CA signature. |
+| `verify-full` | Require SSL, verify CA and hostname. |
 
-### SSL Certificate Options
 
-For SSL modes that require certificates:
+To specify an SSL mode that requires certificates, include the following properties:
 
 ```yaml
 database:
@@ -61,9 +71,11 @@ database:
 
 | Option | Description |
 |--------|-------------|
-| `sslcert` | Path to client certificate file |
-| `sslkey` | Path to client private key file |
-| `sslrootcert` | Path to CA certificate file |
+| `sslcert` | Path to client certificate file. |
+| `sslkey` | Path to client private key file. |
+| `sslrootcert` | Path to CA certificate file. |
+
+
 
 ### Environment Variables
 
@@ -142,7 +154,8 @@ patterns:
 
 ## Columns Section
 
-Specify columns to anonymize:
+List the columns to anonymize with fully-qualified names:
+
 
 ```yaml
 columns:
@@ -181,6 +194,27 @@ columns:
   - column: "my-schema.my-table.my-column"
     pattern: PERSON_NAME
 ```
+
+FIXME another Example:
+
+```yaml
+columns:
+  - column: public.users.first_name
+    pattern: PERSON_FIRST_NAME
+
+  - column: public.users.last_name
+    pattern: PERSON_LAST_NAME
+
+  - column: public.users.email
+    pattern: EMAIL
+
+  - column: public.customers.phone_number
+    pattern: US_PHONE
+```
+
+
+
+
 
 ### Multiple Columns Example
 
