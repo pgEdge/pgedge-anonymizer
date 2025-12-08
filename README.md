@@ -146,11 +146,6 @@ patterns:
     max_year: 2024
 ```
 
-## Documentation
-
-Full documentation is available at
-[pgedge.github.io/pgedge-anonymizer](https://pgedge.github.io/pgedge-anonymizer/).
-
 ## Development
 
 ### Prerequisites
