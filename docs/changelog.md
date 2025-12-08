@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-alpha3] - 2025-12-08
+
+### Fixed
+
+- Fixed config file error handling - commands that require configuration now
+  show a clear error message when no config file is found
+- Fixed issue where viper would incorrectly try to parse the binary as a
+  config file when searching in the binary's directory
+- The `version` and `help` commands no longer attempt to load a config file
+
+### Changed
+
+- Config file search now explicitly looks for `pgedge-anonymizer.yaml` to
+  avoid accidentally matching other files (such as the binary itself)
+
 ## [1.0.0-alpha2] - 2025-11-27
 
 ### Added

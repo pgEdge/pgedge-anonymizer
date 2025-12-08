@@ -4,6 +4,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -63,15 +64,37 @@ func initConfig() {
 		// Use config file from the flag
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Search for config in standard locations
-		viper.SetConfigName("pgedge-anonymizer")
-		viper.SetConfigType("yaml")
+		// Search for config file explicitly with .yaml extension
+		// to avoid viper matching other files (like the binary itself)
+		configName := "pgedge-anonymizer.yaml"
+		searchPaths := []string{"."}
 
-		// Current directory
-		viper.AddConfigPath(".")
+		// Add /etc/pgedge
+		searchPaths = append(searchPaths, "/etc/pgedge")
 
-		// /etc/pgedge
-		viper.AddConfigPath("/etc/pgedge")
+		// Add directory containing the binary
+		if exe, err := os.Executable(); err == nil {
+			searchPaths = append(searchPaths, filepath.Dir(exe))
+		}
+
+		// Search for config file in each path
+		var foundConfig string
+		for _, dir := range searchPaths {
+			path := filepath.Join(dir, configName)
+			if _, err := os.Stat(path); err == nil {
+				foundConfig = path
+				break
+			}
+		}
+
+		if foundConfig != "" {
+			viper.SetConfigFile(foundConfig)
+		} else {
+			// No config found - set up viper for error reporting
+			viper.SetConfigName("pgedge-anonymizer")
+			viper.SetConfigType("yaml")
+			viper.AddConfigPath(".")
+		}
 	}
 
 	// Read environment variables with PGANON_ prefix
