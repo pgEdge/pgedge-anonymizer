@@ -1,16 +1,17 @@
 # pgEdge Anonymizer 
 
-pgEdge Anonymizer is a command-line tool for anonymizing personally
-identifiable information (PII) in PostgreSQL databases. It replaces
-sensitive data with realistic but fake values while maintaining data
-consistency and referential integrity.
+pgEdge Anonymizer is a command-line tool for anonymizing personally identifiable information (PII) in a PostgreSQL database. Anonymizer replaces sensitive data with realistic but fake values while maintaining data consistency and referential integrity, so your development team has a working copy for experimentation and testing.
+
+!!! warning
+
+    pgEdge Anonymizer is a development tool intended to obscure PII data, and should not be applied to data in a production environment.
 
 pgEdge Anonymizer features:
 
 - **Pattern-based anonymization**: 100+ built-in patterns for common PII types
 - **Consistent replacement**: Same input values produce the same anonymized
   output within a run
-- **Foreign key awareness**: Automatically handles CASCADE relationships
+- **Foreign key awareness**: Automatically handles `CASCADE` relationships
 - **Large database support**: Efficient batch processing with server-side
   cursors
 - **Format preservation**: Maintains original data formatting where possible
@@ -26,11 +27,10 @@ pgEdge Anonymizer automatically analyzes foreign key relationships:
 - **Processing order**: Columns are processed in dependency order to
   maintain referential integrity.
 
-- **Skip targets**: Columns that are CASCADE targets of other configured
+- **Skip targets**: Columns that are `CASCADE` targets of other configured
   columns are automatically skipped to avoid duplicate processing.
 
-**Getting Help**
+**For help with pgEdge Anonymizer issues, visit:**
 
 - [GitHub Issues](https://github.com/pgEdge/pgedge-anonymizer/issues)
-- [Documentation](https://pgedge.github.io/pgedge-anonymizer/)
-
+- [Documentation](https://docs.pgedge.com/pgedge-anonymizer/)

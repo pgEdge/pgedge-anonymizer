@@ -1,15 +1,30 @@
 # Patterns Reference
 
-This page provides detailed documentation for all built-in anonymization
-patterns and guidance on creating custom patterns.
+pgEdge Anonymizer includes a number of built-in anonymization patterns and can [use a combination of pre-defined patterns and user-defined patterns](configuration.md#pattern-options) when processing a file.
 
 ## Built-in Patterns
 
-pgEdge Anonymizer includes over 180 built-in patterns covering common PII
-types, with extensive support for country-specific data formats across 19
-countries: Australia, Canada, Finland, France, Germany, India, Ireland,
-Italy, Japan, Mexico, New Zealand, Norway, Pakistan, Singapore, South Korea,
-Spain, Sweden, United Kingdom, and United States.
+pgEdge Anonymizer includes over 180 built-in patterns covering common PII types, with extensive support for country-specific data formats across 19 countries: 
+
+* Australia
+* Canada
+* Finland
+* France
+* Germany
+* India
+* Ireland
+* Italy
+* Japan
+* Mexico
+* New Zealand
+* Norway
+* Pakistan
+* Singapore
+* South Korea
+* Spain
+* Sweden
+* United Kingdom
+* United States
 
 ### Person Names
 

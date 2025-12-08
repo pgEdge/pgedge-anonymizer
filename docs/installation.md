@@ -19,17 +19,16 @@ git clone https://github.com/pgedge/pgedge-anonymizer.git
 cd pgedge-anonymizer
 ```
 
-Then, use `make` to build the anonymizer binary:
+Then, use `make build` to build anonymizer:
 
 ```bash
 make build
 ```
 
-The `make build` command creates the `pgedge-anonymizer` binary in the `/bin` directory in your current directory.  
+The `make build` command installs dependencies (if needed) and creates the `pgedge-anonymizer` binary in the `/bin` directory in your current directory.  
 
-
-When the installation completes, you can use the following command to see pgEdge Anonymizer version information:
+When the installation completes, you can use the following command to see pgEdge Anonymizer help information:
 
 ```bash
-pgedge-anonymizer version
+pgedge-anonymizer help
 ```

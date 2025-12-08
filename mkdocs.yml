@@ -61,6 +61,7 @@ nav:
   - Reference:
       - Configuration: configuration.md
       - Patterns: patterns.md
+      - Example - Configuration File: sample_config.md
   - Troubleshooting: troubleshooting.md
   - pgEdge Anonymizer Release Notes: changelog.md
   - Licence: LICENCE.md
