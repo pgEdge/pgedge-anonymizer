@@ -35,16 +35,19 @@ Include the run keyword when you invoke `pgedge-anonymizer` to start anonymizati
 pgedge-anonymizer run [flags]
 ```
 
-Include the following [command line options](configuration.md#command-line-overrides) as needed:
+Include the following [command line options](configuration.md#using-command-line-options) as needed:
 
-- `--config, -c`: Configuration file path (default: pgedge-anonymizer.yaml)
-- `--quiet, -q`: Suppress progress output
-- `--host`: Database host (overrides config)
-- `--port`: Database port (overrides config)
-- `--database, -d`: Database name (overrides config)
-- `--user, -U`: Database user (overrides config)
-- `--password`: Database password (overrides config)
-- `--sslmode`: SSL mode (overrides config)
+| Flag            | Description                                                    |
+|-----------------|----------------------------------------------------------------|
+| `--config, -c`  | Path to Configuration File (default: `pgedge-anonymizer.yaml`) |
+| `--quiet, -q`   | Suppress progress output                                       |
+| `--host`        | Database host (overrides value in configuration file)          |
+| `--port`        | Database port (overrides value in configuration file)          |
+| `--database, -d`| Database name (overrides value in configuration file)          |
+| `--user, -U`    | Database user (overrides value in configuration file)          |
+| `--password`    | Database password (overrides value in configuration file)      |
+| `--sslmode`     | SSL mode (overrides value in configuration file)               |
+
 
 To review online help, use the command:
 

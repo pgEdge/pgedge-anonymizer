@@ -55,12 +55,13 @@ nav:
       - Best Practices: best_practices.md
   - Installing pgEdge Anonymizer:
       - Installing Anonymizer: installation.md
+      - Creating a Configuration File: configuration.md
       - pgEdge Anonymizer Quickstart: quickstart.md
   - Using pgEdge Anonymizer:
       - Using Anonymizer: usage.md
-  - Reference:
-      - Configuration: configuration.md
-      - Patterns: patterns.md
+  - Creating and Using Patterns:
+      - Creating a User-Defined Pattern: custom_pattern.md
+      - Using Pre-defined Patterns: patterns.md
       - Example - Configuration File: sample_config.md
   - Troubleshooting: troubleshooting.md
   - pgEdge Anonymizer Release Notes: changelog.md

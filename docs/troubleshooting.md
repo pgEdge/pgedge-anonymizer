@@ -6,27 +6,19 @@ To review online help on all command-line options, use the command:
 pgedge-anonymizer help
 ```
 
-To see pgEdge Anonymizer version information:
-
-```bash
-pgedge-anonymizer version
-```
-
 ## Troubleshooting
 
-### Common Issues
-
-**"column not found in database"**
+### Column Not Found in Database
 
 - Verify the schema.table.column path is correct
 - Check that the user has SELECT permission on the table
 
-**"unknown pattern"**
+### Unknown Pattern
 
 - Ensure the pattern name matches exactly (case-sensitive)
 - Check that custom patterns are properly defined
 
-**"failed to connect"**
+### Failed to Connect
 
 - Verify database credentials
 - Check network connectivity
