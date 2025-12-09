@@ -57,8 +57,7 @@ nav:
       - Installing Anonymizer: installation.md
       - Creating a Configuration File: configuration.md
       - pgEdge Anonymizer Quickstart: quickstart.md
-  - Using pgEdge Anonymizer:
-      - Using Anonymizer: usage.md
+  - Using pgEdge Anonymizer: usage.md
   - Creating and Using Patterns:
       - Creating a User-Defined Pattern: custom_pattern.md
       - Using Pre-defined Patterns: patterns.md
