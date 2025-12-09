@@ -2,16 +2,15 @@
 
 Anonymizer lets you create an experimental data set that preserves the shape and integrity of a Postgres database in just three steps:
 
-1. Create a configuration file.
-2. Build and run the Anonymizer.
-3. View the results.
+1. Create a configuration file that specifies the replacement patterns for your columns.
+2. Build and run the `pgedge-anonymizer` to convert your columns.
+3. Review the results.
 
-## Creating a Configuration File
+Before running `pgedge-anonymizer`, you need to create a [configuration file](configuration.md) named `pgedge-anonymizer.yaml`; the file should contain:
 
-Before 
-1. Create a [configuration file](configuration.md) named `pgedge-anonymizer.yaml`; the file should contain: 
-   * a [`database` section](configuration.md#database-properties), with connection details for your database.
-   * a [`columns` section](configuration.md#columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column name` format).
+   * a [`database` section](configuration.md#specifying-properties-in-the-database-section), with connection details for your database.
+   * a [`columns` section](configuration.md#specifying-properties-in-the-columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column name` format).
+   * [`patterns` properties](configuration.md#specifying-properties-in-the-pattern-section) for each column that specifies the form that replacement content will take.
 
 For example:
 
@@ -33,13 +32,13 @@ columns:
     pattern: US_SSN
 ```
 
-1. [Run the anonymizer](usage.md), specifying the keyword `run`:
+After creating a configuration file, [run the anonymizer](usage.md):
 
 ```bash
 pgedge-anonymizer run
 ```
 
-1. Review the results as the anonymizer runs, displaying statistics:
+Review the list of changes as `pgedge-anonymizer` runs, displaying statistics:
 
 ```
 Processing public.users.email (est. 50000 rows)...

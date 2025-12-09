@@ -99,7 +99,7 @@ Pattern properties specify:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `default_path` | string | (auto) | Path to the [default patterns file](patterns.md). |
-| `user_path` | string | "" | Path to [user-defined patterns](#creating-user-defined-patterns). |
+| `user_path` | string | "" | Path to [user-defined patterns](custom_pattern.md). |
 | `disable_defaults` | boolean | false | Skip loading built-in patterns. |
 
 If a `default_path` is not specified, the tool searches for `pgedge-anonymizer-patterns.yaml` in the following locations:
