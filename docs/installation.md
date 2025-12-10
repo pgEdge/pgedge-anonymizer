@@ -6,7 +6,7 @@ pgEdge Anonymizer is open-source and licensed with the [PostgreSQL license](LICE
 
 Before building Anonymizer, install:
 
-- Go 1.21 or later
+- Go 1.24 or later
 - PostgreSQL 12 or later
 - Make (optional, for using Makefile targets)
 

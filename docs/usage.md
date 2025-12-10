@@ -53,4 +53,4 @@ To review online help, use the command:
 
 ```bash
 pgedge-anonymizer help
-``
+```

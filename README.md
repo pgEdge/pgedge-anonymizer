@@ -2,22 +2,22 @@
 
 [![CI](https://github.com/pgEdge/pgedge-anonymizer/actions/workflows/ci.yml/badge.svg)](https://github.com/pgEdge/pgedge-anonymizer/actions/workflows/ci.yml)
 
-- [Introduction](docs/index.md)
-      - [Best Practices](docs/best_practices.md)
-  - Installing pgEdge Document Loader
-      - [Installing Document Loader](docs/installation.md)
-      - [Creating a Configuration File](docs/configuration.md)
-      - [pgEdge Anonymizer Quickstart](docs/quickstart.md)
-  - [Using pgEdge Anonymizer](docs/usage.md)
-  - Creating and Using Patterns
-      - [Creating a User-Defined Pattern](docs/custom_pattern.md)
-      - [Using Pre-defined Patterns](docs/pattern.md)
-      - [Example - Configuration File](docs/sample_config.md)
-  - [Troubleshooting](docs/troubleshooting.md)
-  - [Release Notes](docs/changelog.md)
-  - [Licence](docs/LICENCE.md)
+**Documentation:**
 
-pgEdge Anonymizer is a  command-line tool for anonymizing personally identifiable information (PII) in PostgreSQL databases. The tool replaces sensitive data with realistic fake values that you can use for development and testing, while maintaining data consistency and referential integrity.
+- [Introduction](docs/index.md)
+- [Best Practices](docs/best_practices.md)
+- [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
+- [Quickstart](docs/quickstart.md)
+- [Usage](docs/usage.md)
+- [Custom Patterns](docs/custom_pattern.md)
+- [Built-in Patterns](docs/patterns.md)
+- [Example Configuration](docs/sample_config.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Release Notes](docs/changelog.md)
+- [Licence](docs/LICENCE.md)
+
+pgEdge Anonymizer is a command-line tool for anonymizing personally identifiable information (PII) in PostgreSQL databases. The tool replaces sensitive data with realistic fake values that you can use for development and testing, while maintaining data consistency and referential integrity.
 
 ## Features
 
@@ -41,7 +41,7 @@ Anonymizer lets you create an experimental data set that preserves the shape and
 Before running `pgedge-anonymizer`, you need to create a [configuration file](docs/configuration.md) named `pgedge-anonymizer.yaml`; the file should contain:
 
    * a [`database` section](docs/configuration.md#specifying-properties-in-the-database-section), with connection details for your database.
-   * a [`columns` section](docs/configuration.md#specifying-properties-in-the-columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column name` format).
+   * a [`columns` section](docs/configuration.md#specifying-properties-in-the-columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column_name` format).
    * [`patterns` properties](docs/configuration.md#specifying-properties-in-the-pattern-section) for each column that specifies the form that replacement content will take.
 
 For example:
@@ -119,7 +119,7 @@ make lint
 Use the following command to format the code:
 
 ```bash
-make format
+make fmt
 ```
 
 ## License

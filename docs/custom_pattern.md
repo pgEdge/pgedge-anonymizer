@@ -2,7 +2,7 @@
 
 When you build your [configuration file](configuration.md), you will specify the patterns used to replace sensitive data with similar but meaningless values.  pgEdge Anonymizer includes a number of built-in anonymization patterns and can use a combination of [pre-defined patterns](patterns.md) and user-defined patterns when processing a file.  Custom patterns can either reference built-in generators or define format-based patterns that generate data based on format strings.
 
-## Using Custom Patterns
+## Referencing Custom Patterns
 
 After creating and saving custom patterns in a file, provide a reference to that file in your configuration file (with the `patterns` property):
 
@@ -11,7 +11,7 @@ patterns:
   user_path: ./custom-patterns.yaml
 ```
 
-Or, on the command line when you invoke `pgedge-anonymizer`::
+Or, on the command line when you invoke `pgedge-anonymizer`:
 
 ```bash
 pgedge-anonymizer run --config config.yaml --patterns custom-patterns.yaml

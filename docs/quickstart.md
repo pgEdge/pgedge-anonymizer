@@ -9,7 +9,7 @@ Anonymizer lets you create an experimental data set that preserves the shape and
 Before running `pgedge-anonymizer`, you need to create a [configuration file](configuration.md) named `pgedge-anonymizer.yaml`; the file should contain:
 
    * a [`database` section](configuration.md#specifying-properties-in-the-database-section), with connection details for your database.
-   * a [`columns` section](configuration.md#specifying-properties-in-the-columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column name` format).
+   * a [`columns` section](configuration.md#specifying-properties-in-the-columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column_name` format).
    * [`patterns` properties](configuration.md#specifying-properties-in-the-pattern-section) for each column that specifies the form that replacement content will take.
 
 For example:

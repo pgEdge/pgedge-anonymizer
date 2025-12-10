@@ -7,7 +7,7 @@ Anonymizer replaces sensitive PII data with fake values while maintaining data c
 1. **Back up your database** - Anonymization is irreversible.
 2. **Test on a copy** - Validate your configuration to ensure that Anonymizer is applied to a non-production database.
 3. **Review columns** - Ensure all PII columns are included when obscuring test data.
-4. **Check foreign keys** - Understand `CASCADE` relationships within your files.
+4. **Check foreign keys** - Understand `CASCADE` relationships within your tables.
 
 To maintain a secure environment while using Anonymizer, you should:
 
@@ -32,5 +32,3 @@ To ensure you're getting the best performance, you should:
 - ensure that you have adequate disk space for transaction logs.
 - consider using table-level locks for very large updates.
 - monitor the PostgreSQL logs for any issues.
-
-

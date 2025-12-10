@@ -790,5 +790,3 @@ names, full names, and cities. The pattern names follow the format
 | `SE_PNR` | Swedish personnummer | YYMMDD-XXXX |
 | `SG_NRIC` | Singaporean NRIC | Letter + 7 digits + letter |
 | `US_SSN` | US Social Security Number | XXX-XX-XXXX |
-
----

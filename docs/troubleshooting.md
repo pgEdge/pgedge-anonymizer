@@ -28,4 +28,4 @@ pgedge-anonymizer help
 ## Getting Help
 
 - [GitHub Issues](https://github.com/pgEdge/pgedge-anonymizer/issues)
-- [Documentation](https://pgedge.github.io/pgedge-anonymizer/)
+- [Documentation](https://docs.pgedge.com/pgedge-anonymizer/)
