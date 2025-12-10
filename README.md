@@ -124,7 +124,7 @@ make fmt
 
 ## License
 
-Copyright 2025 pgEdge, Inc. All rights reserved.
+[Copyright 2025 pgEdge](docs/LICENCE.md), Inc. All rights reserved.
 
 ## Support
 
