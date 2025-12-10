@@ -122,11 +122,11 @@ Use the following command to format the code:
 make fmt
 ```
 
-## License
-
-[Copyright 2025 pgEdge](docs/LICENCE.md), Inc. All rights reserved.
-
 ## Support
 
 - [GitHub Issues](https://github.com/pgEdge/pgedge-anonymizer/issues)
 - Full documentation is available at [the pgEdge website](https://docs.pgedge.com/pgedge-anonymizer/).
+
+## License
+
+This project is licensed under the [PostgreSQL License](LICENCE.md).
