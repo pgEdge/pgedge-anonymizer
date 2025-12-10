@@ -169,6 +169,12 @@ make fmt          # Format code
 make test
 ```
 
+## TODO
+
+* Add support for scanning a database and outputing a list of *potential* PII
+    columns.
+* Add support for generating a config based on auto-identified PII columns.
+
 ## License
 
 Copyright 2025 pgEdge, Inc. All rights reserved.
