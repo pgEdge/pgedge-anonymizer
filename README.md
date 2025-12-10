@@ -2,44 +2,56 @@
 
 [![CI](https://github.com/pgEdge/pgedge-anonymizer/actions/workflows/ci.yml/badge.svg)](https://github.com/pgEdge/pgedge-anonymizer/actions/workflows/ci.yml)
 
-A command-line tool for anonymizing personally identifiable information (PII)
-in PostgreSQL databases. Replace sensitive data with realistic fake values
-while maintaining data consistency and referential integrity.
+**Documentation:**
+
+- [Introduction](docs/index.md)
+- [Best Practices](docs/best_practices.md)
+- [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
+- [Quickstart](docs/quickstart.md)
+- [Usage](docs/usage.md)
+- [Custom Patterns](docs/custom_pattern.md)
+- [Built-in Patterns](docs/patterns.md)
+- [Example Configuration](docs/sample_config.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Release Notes](docs/changelog.md)
+- [Licence](docs/LICENCE.md)
+
+pgEdge Anonymizer is a command-line tool for anonymizing personally identifiable information (PII) in PostgreSQL databases. The tool replaces sensitive data with realistic fake values that you can use for development and testing, while maintaining data consistency and referential integrity.
 
 ## Features
 
 - **100+ built-in patterns** for common PII types across 19 countries
 - **Consistent replacement** - same input produces same output within a run
 - **Foreign key awareness** - automatically handles CASCADE relationships
-- **Large database support** - efficient batch processing with server-side
-  cursors
+- **Large database support** - efficient batch processing with server-side cursors
 - **Format preservation** - maintains original data formatting where possible
 - **Single transaction** - all changes committed atomically or rolled back
 - **Extensible** - define custom patterns using date, number, or mask formats
 
+
 ## Quick Start
 
-### Installation
+Anonymizer lets you create an experimental data set that preserves the shape and integrity of a Postgres database in just three steps:
 
-Download the latest release from the
-[releases page](https://github.com/pgEdge/pgedge-anonymizer/releases), or
-build from source:
+1. Create a configuration file that specifies the replacement patterns for your columns.
+2. Build and run the `pgedge-anonymizer` to convert your columns.
+3. Review the results.
 
-```bash
-git clone https://github.com/pgEdge/pgedge-anonymizer.git
-cd pgedge-anonymizer
-make build
-```
+Before running `pgedge-anonymizer`, you need to create a [configuration file](docs/configuration.md) named `pgedge-anonymizer.yaml`; the file should contain:
 
-### Usage
+   * a [`database` section](docs/configuration.md#specifying-properties-in-the-database-section), with connection details for your database.
+   * a [`columns` section](docs/configuration.md#specifying-properties-in-the-columns-section), listing the fully-qualified columns that you wish to anonymize (in `schema_name.table_name.column_name` format).
+   * [`patterns` properties](docs/configuration.md#specifying-properties-in-the-pattern-section) for each column that specifies the form that replacement content will take.
 
-1. Create a configuration file `pgedge-anonymizer.yaml`:
+For example:
 
 ```yaml
 database:
   host: localhost
   port: 5432
   database: myapp
+  user: anonymizer
 
 columns:
   - column: public.users.email
@@ -50,130 +62,65 @@ columns:
 
   - column: public.users.ssn
     pattern: US_SSN
-
-  - column: public.users.first_name
-    pattern: PERSON_FIRST_NAME
-
-  - column: public.users.last_name
-    pattern: PERSON_LAST_NAME
 ```
 
-2. Run the anonymizer:
+After creating a configuration file, [run the anonymizer](docs/usage.md):
 
 ```bash
-pgedge-anonymizer run --user myuser --password mypassword
+pgedge-anonymizer run
 ```
 
-3. Validate configuration without making changes:
+Review the list of changes as `pgedge-anonymizer` runs, displaying statistics:
 
-```bash
-pgedge-anonymizer validate
+```
+Processing public.users.email (est. 50000 rows)...
+  10000 rows processed
+  20000 rows processed
+  30000 rows processed
+  40000 rows processed
+  50000 rows processed
+  Completed: 50000 rows, 48234 values anonymized
+
+=== Anonymization Statistics ===
+Total columns processed: 1
+Total rows processed:    50000
+Total values anonymized: 48234
+Total duration:          2.34s
+Throughput:              21367 rows/sec
 ```
 
-## Built-in Patterns
 
-### Worldwide Patterns
+## Developer Notes
 
-| Pattern | Description | Example |
-|---------|-------------|---------|
-| `PERSON_NAME` | Full name | Michael Williams |
-| `PERSON_FIRST_NAME` | First name | Jennifer |
-| `PERSON_LAST_NAME` | Last name | Anderson |
-| `EMAIL` | Email address | john.smith.a1b2c3@example.com |
-| `ADDRESS` | Street address | 456 Oak Avenue, London, Greater London |
-| `CITY` | City name | Manchester, Greater Manchester |
-| `DOB` | Date of birth | 1985-03-15 |
-| `CREDIT_CARD` | Credit card number | 4532-1234-5678-9012 |
-| `PASSPORT` | Passport number | A12345678 |
-
-### Country-Specific Patterns
-
-Patterns are available for Australia, Canada, Finland, France, Germany,
-India, Ireland, Italy, Japan, Mexico, New Zealand, Norway, Pakistan,
-Singapore, South Korea, Spain, Sweden, United Kingdom, and United States.
-
-Examples:
-
-| Pattern | Description | Example |
-|---------|-------------|---------|
-| `US_SSN` | US Social Security Number | 234-56-7890 |
-| `US_PHONE` | US phone number | (555) 234-5678 |
-| `UK_NI` | UK National Insurance | AB123456C |
-| `UK_POSTCODE` | UK postcode | SW1A 1AA |
-| `DE_STEUERID` | German tax ID | 12345678901 |
-| `FR_NIR` | French social security | 1 85 01 75 123 456 00 |
-| `IN_AADHAAR` | Indian Aadhaar | 1234 5678 9012 |
-| `JP_MYNUMBER` | Japanese My Number | 123456789012 |
-
-See the [patterns documentation](https://pgedge.github.io/pgedge-anonymizer/patterns/)
-for the complete list.
-
-## Configuration
-
-Database connection can be configured via:
-
-- Configuration file (`database` section)
-- Environment variables (`PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`,
-  `PGPASSWORD`, `PGSSLMODE`)
-- Command-line flags (`--host`, `--port`, `--database`, `--user`,
-  `--password`, `--sslmode`)
-
-Priority: command-line flags > config file > environment variables.
-
-See the [configuration reference](https://pgedge.github.io/pgedge-anonymizer/configuration/)
-for complete details.
-
-## Custom Patterns
-
-Define custom patterns using format strings:
-
-```yaml
-patterns:
-  - name: ORDER_NUMBER
-    format: "ORD-%08d"
-    type: number
-    min: 1
-    max: 99999999
-
-  - name: PRODUCT_SKU
-    format: "SKU-AA-####"
-    type: mask
-
-  - name: HIRE_DATE
-    format: "%Y-%m-%d"
-    type: date
-    min_year: 2010
-    max_year: 2024
-```
-
-## Development
-
-### Prerequisites
+**Prerequisites**
 
 - Go 1.24 or later
 - PostgreSQL (for integration tests)
 - Python 3.12+ (for documentation)
 
-### Building
+Use the following command to build pgedge-anonymizer:
 
 ```bash
 make build        # Build binary
-make test         # Run tests
-make lint         # Run linter
-make fmt          # Format code
 ```
 
-### Running Tests
+Use the following command to run the Anonymizer test suite:
 
 ```bash
 make test
 ```
 
-## TODO
+Use the following command to run the Go Linter:
 
-* Add support for scanning a database and outputing a list of *potential* PII
-    columns.
-* Add support for generating a config based on auto-identified PII columns.
+```bash
+make lint
+```
+
+Use the following command to format the code:
+
+```bash
+make fmt
+```
 
 ## License
 
@@ -182,4 +129,4 @@ Copyright 2025 pgEdge, Inc. All rights reserved.
 ## Support
 
 - [GitHub Issues](https://github.com/pgEdge/pgedge-anonymizer/issues)
-- [Documentation](https://github.com/pgEdge/pgedge-anonymizer/blob/main/docs/index.md)
+- Full documentation is available at [the pgEdge website](https://docs.pgedge.com/pgedge-anonymizer/).

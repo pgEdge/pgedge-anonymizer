@@ -50,12 +50,18 @@ copyright: Copyright &copy; 2025 pgEdge, Inc
 repo_url: https://github.com/pgEdge/pgedge-anonymizer
 
 nav:
-  - Getting Started:
+  - pgEdge Anonymizer:
       - Introduction: index.md
-
-  - Reference:
-      - Configuration: configuration.md
-      - Patterns: patterns.md
-
-  - Changelog: changelog.md
+      - Best Practices: best_practices.md
+  - Installing pgEdge Anonymizer:
+      - Installing Anonymizer: installation.md
+      - Creating a Configuration File: configuration.md
+      - pgEdge Anonymizer Quickstart: quickstart.md
+  - Using pgEdge Anonymizer: usage.md
+  - Creating and Using Patterns:
+      - Creating a User-Defined Pattern: custom_pattern.md
+      - Using Pre-defined Patterns: patterns.md
+      - Example - Configuration File: sample_config.md
+  - Troubleshooting: troubleshooting.md
+  - pgEdge Anonymizer Release Notes: changelog.md
   - Licence: LICENCE.md

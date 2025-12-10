@@ -1,20 +1,39 @@
 # Configuration Reference
 
-This page provides complete documentation for pgEdge Anonymizer
-configuration options.
-
-## Configuration File
-
-By default, pgEdge Anonymizer looks for `pgedge-anonymizer.yaml` in the
-current directory. Use `--config` to specify an alternative path:
+By default, pgEdge Anonymizer looks for a configuration file named `pgedge-anonymizer.yaml` in the current directory. When invoking `pgedge-anonymizer`, include the `--config` option to specify an alternative path to the configuration file:
 
 ```bash
 pgedge-anonymizer run --config /path/to/config.yaml
 ```
 
-## Database Section
+The configuration file is organized in three major sections:
 
-Configure PostgreSQL connection settings:
+* [Database Properties](#specifying-properties-in-the-database-section)
+* [Pattern Properties](#specifying-properties-in-the-pattern-section)
+* [Column Properties](#specifying-properties-in-the-columns-section)
+
+When invoking `pgedge-anonymizer`, you can specify database connection settings with command-line flags or in a configuration file; command-line options for database settings will override values set elsewhere:
+
+```bash
+pgedge-anonymizer run \
+  --config config.yaml \              # Uses config.yaml instead of the default config file
+  --host production-db.example.com \  # Overrides database host from config file
+  --port 5433 \                       # Overrides database port from config file
+  --database myapp_staging \          # Overrides database name from config file
+  --user admin \                      # Overrides database user from config file
+  --password secret \                 # Overrides database password from config file
+  --sslmode require \                 # Overrides SSL mode from config file
+  --quiet                             # Suppresses progress output
+```
+
+!!! hint
+
+    Anonymizer also supports the use of standard PostgreSQL environment variables for database connection options; options specified on the command line and in the configuration file take precedence over environment variable values.
+
+
+## Specifying Properties in the Database Section
+
+Include a `database` properties section in your configuration file to specify PostgreSQL connection settings:
 
 ```yaml
 database:
@@ -26,8 +45,6 @@ database:
   sslmode: prefer
 ```
 
-### Connection Options
-
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `host` | string | localhost | Database server hostname or IP |
@@ -35,21 +52,9 @@ database:
 | `database` | string | (required) | Database name to connect to |
 | `user` | string | (required) | Database user for authentication |
 | `password` | string | "" | Database password (prompts if empty) |
-| `sslmode` | string | prefer | SSL connection mode |
+| `sslmode` | string | prefer | SSL connection mode; specify `disable`, `prefer` (use if available), `require` (require SSL, but don't verify the certificate), `verify-ca` (require SSL, and verify the CA signature), or `verify-full` (require SSL and verify the CA and hostname). |
 
-### SSL Modes
-
-| Mode | Description |
-|------|-------------|
-| `disable` | No SSL |
-| `prefer` | Use SSL if available (default) |
-| `require` | Require SSL, don't verify certificate |
-| `verify-ca` | Require SSL, verify CA signature |
-| `verify-full` | Require SSL, verify CA and hostname |
-
-### SSL Certificate Options
-
-For SSL modes that require certificates:
+If you specify an SSL mode that requires certificates, include supporting properties in the `database` section:
 
 ```yaml
 database:
@@ -59,16 +64,14 @@ database:
   sslrootcert: /path/to/ca-cert.pem
 ```
 
-| Option | Description |
-|--------|-------------|
-| `sslcert` | Path to client certificate file |
-| `sslkey` | Path to client private key file |
-| `sslrootcert` | Path to CA certificate file |
+Where:
+    * `sslcert` is the path to the client certificate file.
+    * `sslkey` is the path to the client private key file.
+    * `sslrootcert` is the path to the CA certificate file.
 
-### Environment Variables
+**Using Environment Variables for Options**
 
-Database options can also be set via standard PostgreSQL environment
-variables:
+Database options can also be set via standard PostgreSQL environment variables.  If pgEdge Anonymizer does not locate database connection information on the command line or in the configuration file, it will then check the values specified in the following environment variables:
 
 | Config Option | Environment Variable |
 |---------------|---------------------|
@@ -79,15 +82,10 @@ variables:
 | `password` | `PGPASSWORD` |
 | `sslmode` | `PGSSLMODE` |
 
-Priority order (highest to lowest):
 
-1. Command-line flags
-2. Configuration file values
-3. Environment variables
+## Specifying Properties in the Pattern Section
 
-## Patterns Section
-
-Configure pattern file loading:
+Patterns specify the form that replacement content will take when anonymizing your columns.  Patterns can be either user-defined, or a pre-defined pattern.  Patterns are stored in a .yaml file identified in the configuration file by the following properties:
 
 ```yaml
 patterns:
@@ -96,26 +94,21 @@ patterns:
   disable_defaults: false
 ```
 
-### Pattern Options
+Pattern properties specify:
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `default_path` | string | (auto) | Path to default patterns file |
-| `user_path` | string | "" | Path to user-defined patterns |
-| `disable_defaults` | boolean | false | Skip loading built-in patterns |
+| `default_path` | string | (auto) | Path to the [default patterns file](patterns.md). |
+| `user_path` | string | "" | Path to [user-defined patterns](custom_pattern.md). |
+| `disable_defaults` | boolean | false | Skip loading built-in patterns. |
 
-### Default Pattern Search Locations
+If a `default_path` is not specified, the tool searches for `pgedge-anonymizer-patterns.yaml` in the following locations:
 
-If `default_path` is not specified, the tool searches for
-`pgedge-anonymizer-patterns.yaml` in:
-
-1. Current working directory
+1. The current working directory.
 2. `/etc/pgedge/`
 3. `~/.config/pgedge/`
 
-### User-Defined Patterns
-
-Create custom patterns in a separate YAML file:
+You can also [create custom patterns](custom_pattern.md) for your data in a separate .yaml file; for example:
 
 ```yaml
 # my-patterns.yaml
@@ -129,7 +122,7 @@ patterns:
     note: "Customer reference numbers"
 ```
 
-Reference in configuration:
+Then, reference your user-defined pattern file in the configuration file with the following properties:
 
 ```yaml
 patterns:
@@ -137,52 +130,25 @@ patterns:
 ```
 
 !!! note
-    User-defined pattern names must not conflict with built-in patterns
-    unless `disable_defaults: true` is set.
+    User-defined pattern names must not conflict with built-in patterns unless `disable_defaults: true` is set.
 
-## Columns Section
 
-Specify columns to anonymize:
+## Specifying Properties in the Columns Section
 
-```yaml
-columns:
-  - column: schema.table.column
-    pattern: PATTERN_NAME
-```
-
-### Column Configuration
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `column` | string | Yes | Fully-qualified column name |
-| `pattern` | string | Yes | Pattern name to apply |
-
-### Column Name Format
-
-Columns must be specified as `schema.table.column`:
-
-- **schema**: PostgreSQL schema (usually `public`)
-- **table**: Table name
-- **column**: Column name
-
-Examples:
+Use the configuration file to specify the columns to anonymize with fully-qualified names that include the `schema_name`, `table_name`, and `column_name` information, and the pattern_name that will apply to the data stored in that column:
 
 ```yaml
 columns:
-  # Public schema (most common)
-  - column: public.users.email
-    pattern: EMAIL
-
-  # Custom schema
-  - column: sales.customers.phone
-    pattern: US_PHONE
-
-  # Schema with special characters (use quotes)
-  - column: "my-schema.my-table.my-column"
-    pattern: PERSON_NAME
+  - column: schema_name.table_name.column_name
+    pattern: pattern_name
 ```
 
-### Multiple Columns Example
+Where:
+
+* `column` is a fully-qualified string that specifies the schema_name, table_name, and column name of the column you are anonymizing.
+* `pattern` specifies the name of the pattern that you wish to apply to the column.
+
+For example:
 
 ```yaml
 columns:
@@ -219,101 +185,3 @@ columns:
   - column: public.payments.card_cvv
     pattern: CREDIT_CARD_CVV
 ```
-
-## Complete Example
-
-A full configuration file combining all sections:
-
-```yaml
-# pgEdge Anonymizer Configuration
-
-# Database connection
-database:
-  host: db.example.com
-  port: 5432
-  database: production_copy
-  user: anonymizer
-  password: ""  # Will prompt or use PGPASSWORD
-  sslmode: require
-
-# Pattern configuration
-patterns:
-  user_path: ./custom-patterns.yaml
-  disable_defaults: false
-
-# Columns to anonymize
-columns:
-  # Customer PII
-  - column: public.customers.name
-    pattern: PERSON_NAME
-
-  - column: public.customers.email
-    pattern: EMAIL
-
-  - column: public.customers.phone
-    pattern: US_PHONE
-
-  - column: public.customers.dob
-    pattern: DOB_OVER_18
-
-  # Employee data
-  - column: hr.employees.ssn
-    pattern: US_SSN
-
-  - column: hr.employees.passport_number
-    pattern: PASSPORT
-
-  # UK-specific data
-  - column: uk.customers.ni_number
-    pattern: UK_NI
-
-  - column: uk.customers.nhs_number
-    pattern: UK_NHS
-
-  # Notes and free text
-  - column: public.support_tickets.description
-    pattern: LOREMIPSUM
-```
-
-## Command-Line Overrides
-
-All database settings can be overridden via command-line flags:
-
-```bash
-pgedge-anonymizer run \
-  --config config.yaml \
-  --host production-db.example.com \
-  --port 5433 \
-  --database myapp_staging \
-  --user admin \
-  --password secret \
-  --sslmode require \
-  --quiet
-```
-
-| Flag | Short | Description |
-|------|-------|-------------|
-| `--config` | `-c` | Configuration file path |
-| `--quiet` | `-q` | Suppress progress output |
-| `--host` | | Database host |
-| `--port` | | Database port |
-| `--database` | `-d` | Database name |
-| `--user` | `-U` | Database user |
-| `--password` | | Database password |
-| `--sslmode` | | SSL mode |
-
-## Validation
-
-Always validate your configuration before running:
-
-```bash
-pgedge-anonymizer validate --config config.yaml
-```
-
-This verifies:
-
-- YAML syntax is valid
-- Required fields are present
-- Database connection succeeds
-- All specified columns exist
-- All pattern names are recognized
