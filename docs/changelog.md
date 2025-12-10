@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-alpha4] - 2025-12-10
+
+### Changed
+
+- Comprehensive documentation restructure for improved navigation and
+  readability
+- Split monolithic documentation into focused topic pages:
+    - Best practices guide
+    - Installation guide
+    - Configuration reference
+    - Quickstart tutorial
+    - Usage guide
+    - Custom patterns guide
+    - Built-in patterns reference
+    - Sample configuration
+    - Troubleshooting guide
+- Updated MkDocs navigation structure with logical groupings
+- Simplified README with links to detailed documentation
+
 ## [1.0.0-alpha3] - 2025-12-08
 
 ### Fixed
