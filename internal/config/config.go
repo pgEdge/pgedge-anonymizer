@@ -52,9 +52,22 @@ type PatternsConfig struct {
 }
 
 // ColumnConfig maps a database column to an anonymization pattern.
+// For simple columns, use Pattern. For JSON/JSONB columns, use JSONPaths.
 type ColumnConfig struct {
-	Column  string `yaml:"column" mapstructure:"column"`
+	Column    string           `yaml:"column" mapstructure:"column"`
+	Pattern   string           `yaml:"pattern,omitempty" mapstructure:"pattern"`
+	JSONPaths []JSONPathConfig `yaml:"json_paths,omitempty" mapstructure:"json_paths"`
+}
+
+// JSONPathConfig specifies a JSON path within a column and its pattern.
+type JSONPathConfig struct {
+	Path    string `yaml:"path" mapstructure:"path"`
 	Pattern string `yaml:"pattern" mapstructure:"pattern"`
+}
+
+// IsJSONColumn returns true if this column uses JSON path specifications.
+func (c ColumnConfig) IsJSONColumn() bool {
+	return len(c.JSONPaths) > 0
 }
 
 // CLIOverrides represents command-line overrides for config.
@@ -219,9 +232,34 @@ func (c *Config) Validate() error {
 					i, col.Column))
 			}
 		}
-		if col.Pattern == "" {
-			errs = append(errs, fmt.Sprintf(
-				"column[%d]: pattern name is required", i))
+
+		// Validate pattern vs json_paths (mutually exclusive)
+		if col.IsJSONColumn() {
+			// JSON column validation
+			if col.Pattern != "" {
+				errs = append(errs, fmt.Sprintf(
+					"column[%d]: cannot specify both 'pattern' and 'json_paths'", i))
+			}
+			for j, jp := range col.JSONPaths {
+				if jp.Path == "" {
+					errs = append(errs, fmt.Sprintf(
+						"column[%d].json_paths[%d]: path is required", i, j))
+				} else if !strings.HasPrefix(jp.Path, "$") {
+					errs = append(errs, fmt.Sprintf(
+						"column[%d].json_paths[%d]: path %q must start with '$'",
+						i, j, jp.Path))
+				}
+				if jp.Pattern == "" {
+					errs = append(errs, fmt.Sprintf(
+						"column[%d].json_paths[%d]: pattern is required", i, j))
+				}
+			}
+		} else {
+			// Simple column validation
+			if col.Pattern == "" {
+				errs = append(errs, fmt.Sprintf(
+					"column[%d]: pattern name is required", i))
+			}
 		}
 	}
 

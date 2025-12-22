@@ -177,7 +177,7 @@ BEGIN
 
         INSERT INTO public.customers (
             first_name, last_name, email, phone, mobile_phone, date_of_birth, ssn,
-            passport_number, loyalty_tier, created_at
+            passport_number, profile_data, loyalty_tier, created_at
         ) VALUES (
             fname,
             lname,
@@ -194,6 +194,42 @@ BEGIN
             CASE WHEN random() > 0.9 THEN
                 chr(65 + floor(random() * 26)::int) || lpad((floor(random() * 100000000)::int)::text, 8, '0')
             ELSE NULL END,
+            -- JSONB profile data with nested PII for testing JSON path anonymization
+            jsonb_build_object(
+                'alt_email', lower(fname || '.alt' || i::text || '@' ||
+                    email_domains[1 + floor(random() * array_length(email_domains, 1))::int]),
+                'work_phone', '(' || (200 + floor(random() * 800)::int)::text || ') ' ||
+                    (200 + floor(random() * 800)::int)::text || '-' ||
+                    lpad((floor(random() * 10000)::int)::text, 4, '0'),
+                'preferences', jsonb_build_object(
+                    'newsletter', random() > 0.5,
+                    'sms_alerts', random() > 0.5
+                ),
+                'emergency_contacts', jsonb_build_array(
+                    jsonb_build_object(
+                        'name', first_names[1 + floor(random() * array_length(first_names, 1))::int] || ' ' ||
+                            last_names[1 + floor(random() * array_length(last_names, 1))::int],
+                        'phone', '(' || (200 + floor(random() * 800)::int)::text || ') ' ||
+                            (200 + floor(random() * 800)::int)::text || '-' ||
+                            lpad((floor(random() * 10000)::int)::text, 4, '0'),
+                        'email', lower(first_names[1 + floor(random() * array_length(first_names, 1))::int] ||
+                            '.' || last_names[1 + floor(random() * array_length(last_names, 1))::int] ||
+                            '@' || email_domains[1 + floor(random() * array_length(email_domains, 1))::int]),
+                        'relationship', (ARRAY['spouse', 'parent', 'sibling', 'friend'])[1 + floor(random() * 4)::int]
+                    ),
+                    jsonb_build_object(
+                        'name', first_names[1 + floor(random() * array_length(first_names, 1))::int] || ' ' ||
+                            last_names[1 + floor(random() * array_length(last_names, 1))::int],
+                        'phone', '(' || (200 + floor(random() * 800)::int)::text || ') ' ||
+                            (200 + floor(random() * 800)::int)::text || '-' ||
+                            lpad((floor(random() * 10000)::int)::text, 4, '0'),
+                        'email', lower(first_names[1 + floor(random() * array_length(first_names, 1))::int] ||
+                            '.' || last_names[1 + floor(random() * array_length(last_names, 1))::int] ||
+                            '@' || email_domains[1 + floor(random() * array_length(email_domains, 1))::int]),
+                        'relationship', (ARRAY['spouse', 'parent', 'sibling', 'friend'])[1 + floor(random() * 4)::int]
+                    )
+                )
+            ),
             (ARRAY['bronze', 'silver', 'gold', 'platinum'])[1 + floor(random() * 4)::int],
             NOW() - (random() * 1000)::int * interval '1 day'
         ) RETURNING id INTO cust_id;

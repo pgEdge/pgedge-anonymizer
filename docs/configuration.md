@@ -185,3 +185,96 @@ columns:
   - column: public.payments.card_cvv
     pattern: CREDIT_CARD_CVV
 ```
+
+### Anonymizing JSON/JSONB Columns
+
+For JSON or JSONB columns, you can specify multiple JSON paths within a single
+column, each with its own anonymization pattern. Use `json_paths` instead of
+`pattern`:
+
+```yaml
+columns:
+  - column: public.users.profile_data
+    json_paths:
+      - path: $.email
+        pattern: EMAIL
+      - path: $.phone
+        pattern: US_PHONE
+      - path: $.address.street
+        pattern: ADDRESS
+```
+
+The `json_paths` property accepts an array of path specifications:
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `path` | string | JSON path expression starting with `$` |
+| `pattern` | string | Pattern to apply to values at this path |
+
+**JSON Path Syntax**
+
+pgEdge Anonymizer uses SQL/JSON standard path syntax (PostgreSQL 12+
+compatible):
+
+| Syntax | Description | Example |
+|--------|-------------|---------|
+| `$.field` | Root field access | `$.email` |
+| `$.nested.field` | Nested object access | `$.address.city` |
+| `$.array[*]` | All array elements | `$.tags[*]` |
+| `$.array[0]` | Specific array index | `$.contacts[0]` |
+| `$.array[*].field` | Field in all array objects | `$.contacts[*].email` |
+
+**Array Handling**
+
+When a path contains a wildcard (`[*]`), all matching values are anonymized.
+For example, with the following JSON:
+
+```json
+{
+  "contacts": [
+    {"name": "John", "email": "john@example.com"},
+    {"name": "Jane", "email": "jane@example.com"}
+  ]
+}
+```
+
+The path `$.contacts[*].email` will anonymize both email addresses while
+preserving the JSON structure.
+
+**Example: Complex JSON Structure**
+
+```yaml
+columns:
+  - column: public.customers.profile
+    json_paths:
+      # Simple fields
+      - path: $.personal.email
+        pattern: EMAIL
+      - path: $.personal.phone
+        pattern: US_PHONE
+      - path: $.personal.ssn
+        pattern: US_SSN
+
+      # Array of addresses
+      - path: $.addresses[*].street
+        pattern: ADDRESS
+      - path: $.addresses[*].city
+        pattern: CITY
+
+      # Array of emergency contacts
+      - path: $.emergency_contacts[*].name
+        pattern: PERSON_NAME
+      - path: $.emergency_contacts[*].phone
+        pattern: US_PHONE
+```
+
+!!! note
+
+    You cannot specify both `pattern` and `json_paths` for the same column.
+    Use `pattern` for simple columns and `json_paths` for JSON/JSONB columns.
+
+!!! warning
+
+    If a JSON path resolves to a non-string value (object, array, or null),
+    a warning is logged and the value is skipped. Only string values are
+    anonymized.

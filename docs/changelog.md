@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-beta2] - 2025-12-22
+
+### Added
+
+- **JSON/JSONB Column Anonymization**
+
+    - Support for anonymizing values within JSON and JSONB columns
+    - JSON path expressions using SQL/JSON standard syntax (PostgreSQL 12+
+      compatible)
+    - Multiple paths per column, each with its own anonymization pattern
+    - Array element handling with wildcard syntax (`$.contacts[*].email`)
+    - Nested object access (`$.address.city`)
+    - New `json_paths` configuration option as alternative to `pattern` for
+      JSON columns
+    - Consistent anonymization across JSON values using existing dictionary
+      caching
+
 ## [1.0.0-beta1] - 2025-12-15
 
 ### Changed

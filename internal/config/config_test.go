@@ -455,6 +455,171 @@ func TestFindDefaultPatternsFile(t *testing.T) {
 	})
 }
 
+// TestJSONColumnValidation tests JSON column configuration validation
+func TestJSONColumnValidation(t *testing.T) {
+	// Clear env vars that might affect validation
+	origDB := os.Getenv("PGDATABASE")
+	origPGUser := os.Getenv("PGUSER")
+	origUser := os.Getenv("USER")
+	defer func() {
+		os.Setenv("PGDATABASE", origDB)
+		os.Setenv("PGUSER", origPGUser)
+		os.Setenv("USER", origUser)
+	}()
+	os.Setenv("PGDATABASE", "testdb")
+	os.Setenv("PGUSER", "testuser")
+
+	t.Run("valid JSON column config", func(t *testing.T) {
+		cfg := Config{
+			Columns: []ColumnConfig{
+				{
+					Column: "public.users.profile",
+					JSONPaths: []JSONPathConfig{
+						{Path: "$.email", Pattern: "EMAIL"},
+						{Path: "$.phone", Pattern: "US_PHONE"},
+					},
+				},
+			},
+		}
+		if err := cfg.Validate(); err != nil {
+			t.Errorf("expected valid config, got error: %v", err)
+		}
+	})
+
+	t.Run("JSON column with pattern and json_paths", func(t *testing.T) {
+		cfg := Config{
+			Columns: []ColumnConfig{
+				{
+					Column:  "public.users.profile",
+					Pattern: "EMAIL", // Should not be allowed with json_paths
+					JSONPaths: []JSONPathConfig{
+						{Path: "$.email", Pattern: "EMAIL"},
+					},
+				},
+			},
+		}
+		err := cfg.Validate()
+		if err == nil {
+			t.Error("expected error for pattern with json_paths")
+		}
+		if !contains(err.Error(), "cannot specify both") {
+			t.Errorf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("JSON path missing path", func(t *testing.T) {
+		cfg := Config{
+			Columns: []ColumnConfig{
+				{
+					Column: "public.users.profile",
+					JSONPaths: []JSONPathConfig{
+						{Path: "", Pattern: "EMAIL"},
+					},
+				},
+			},
+		}
+		err := cfg.Validate()
+		if err == nil {
+			t.Error("expected error for missing path")
+		}
+		if !contains(err.Error(), "path is required") {
+			t.Errorf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("JSON path missing pattern", func(t *testing.T) {
+		cfg := Config{
+			Columns: []ColumnConfig{
+				{
+					Column: "public.users.profile",
+					JSONPaths: []JSONPathConfig{
+						{Path: "$.email", Pattern: ""},
+					},
+				},
+			},
+		}
+		err := cfg.Validate()
+		if err == nil {
+			t.Error("expected error for missing pattern")
+		}
+		if !contains(err.Error(), "pattern is required") {
+			t.Errorf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("JSON path not starting with $", func(t *testing.T) {
+		cfg := Config{
+			Columns: []ColumnConfig{
+				{
+					Column: "public.users.profile",
+					JSONPaths: []JSONPathConfig{
+						{Path: "email", Pattern: "EMAIL"},
+					},
+				},
+			},
+		}
+		err := cfg.Validate()
+		if err == nil {
+			t.Error("expected error for path not starting with $")
+		}
+		if !contains(err.Error(), "must start with '$'") {
+			t.Errorf("unexpected error: %v", err)
+		}
+	})
+
+	t.Run("JSON path with array wildcard", func(t *testing.T) {
+		cfg := Config{
+			Columns: []ColumnConfig{
+				{
+					Column: "public.users.profile",
+					JSONPaths: []JSONPathConfig{
+						{Path: "$.contacts[*].email", Pattern: "EMAIL"},
+					},
+				},
+			},
+		}
+		if err := cfg.Validate(); err != nil {
+			t.Errorf("expected valid config with array wildcard, got: %v", err)
+		}
+	})
+}
+
+// TestIsJSONColumn tests the IsJSONColumn helper method
+func TestIsJSONColumn(t *testing.T) {
+	t.Run("simple column", func(t *testing.T) {
+		col := ColumnConfig{
+			Column:  "public.users.email",
+			Pattern: "EMAIL",
+		}
+		if col.IsJSONColumn() {
+			t.Error("simple column should not be JSON column")
+		}
+	})
+
+	t.Run("JSON column", func(t *testing.T) {
+		col := ColumnConfig{
+			Column: "public.users.profile",
+			JSONPaths: []JSONPathConfig{
+				{Path: "$.email", Pattern: "EMAIL"},
+			},
+		}
+		if !col.IsJSONColumn() {
+			t.Error("column with json_paths should be JSON column")
+		}
+	})
+
+	t.Run("empty json_paths", func(t *testing.T) {
+		col := ColumnConfig{
+			Column:    "public.users.profile",
+			Pattern:   "EMAIL",
+			JSONPaths: []JSONPathConfig{},
+		}
+		if col.IsJSONColumn() {
+			t.Error("column with empty json_paths should not be JSON column")
+		}
+	})
+}
+
 // helper function
 func contains(s, substr string) bool {
 	return len(s) >= len(substr) && (s == substr ||

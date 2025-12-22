@@ -12,6 +12,7 @@ package anonymizer
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -137,10 +138,10 @@ func (a *Anonymizer) Run(ctx context.Context) (*stats.Stats, error) {
 		skipSet[col.String()] = true
 	}
 
-	// Build column-to-pattern mapping
-	patternMap := make(map[string]string)
+	// Build column-to-config mapping
+	columnConfigMap := make(map[string]config.ColumnConfig)
 	for _, cc := range a.config.Columns {
-		patternMap[cc.Column] = cc.Pattern
+		columnConfigMap[cc.Column] = cc
 	}
 
 	// Start transaction
@@ -170,17 +171,10 @@ func (a *Anonymizer) Run(ctx context.Context) (*stats.Stats, error) {
 			continue
 		}
 
-		// Get pattern name for this column
-		patternName, ok := patternMap[col.String()]
+		// Get column config
+		colConfig, ok := columnConfigMap[col.String()]
 		if !ok {
-			return nil, fmt.Errorf("no pattern found for column %s", col.String())
-		}
-
-		// Get generator for pattern
-		gen, ok := a.generators.Get(patternName)
-		if !ok {
-			return nil, fmt.Errorf("unknown pattern %q for column %s",
-				patternName, col.String())
+			return nil, fmt.Errorf("no config found for column %s", col.String())
 		}
 
 		// Get column data type for proper casting
@@ -197,25 +191,18 @@ func (a *Anonymizer) Run(ctx context.Context) (*stats.Stats, error) {
 				col.String(), estimate)
 		}
 
-		// Check if column has a unique constraint
-		hasUnique, err := validator.HasUniqueConstraint(ctx, col)
-		if err != nil {
-			return nil, fmt.Errorf("failed to check unique constraint for %s: %w",
-				col.String(), err)
-		}
-
-		// Process column
+		// Process column - different handling for JSON vs simple columns
 		colStart := time.Now()
-		processor := NewColumnProcessor(tx, col, dataType, gen, a.dictionary,
-			database.DefaultBatchSize, hasUnique)
+		var result *ProcessResult
 
-		var lastProgress int64
-		result, err := processor.Process(ctx, func(processed int64) {
-			if !a.quiet && processed-lastProgress >= 10000 {
-				fmt.Printf("  %d rows processed\n", processed)
-				lastProgress = processed
-			}
-		})
+		if colConfig.IsJSONColumn() {
+			// JSON column: process with JSON path extraction
+			result, err = a.processJSONColumn(ctx, tx, col, dataType, colConfig)
+		} else {
+			// Simple column: process with single pattern
+			result, err = a.processSimpleColumn(ctx, tx, col, dataType,
+				colConfig.Pattern, validator)
+		}
 
 		if err != nil {
 			return nil, errors.NewAnonymizationError(col, 0, "",
@@ -259,4 +246,71 @@ func (a *Anonymizer) Close() error {
 		a.connector.Close()
 	}
 	return nil
+}
+
+// processSimpleColumn processes a column with a single pattern.
+func (a *Anonymizer) processSimpleColumn(
+	ctx context.Context,
+	tx *sql.Tx,
+	col errors.ColumnRef,
+	dataType string,
+	patternName string,
+	validator *database.SchemaValidator,
+) (*ProcessResult, error) {
+	// Get generator for pattern
+	gen, ok := a.generators.Get(patternName)
+	if !ok {
+		return nil, fmt.Errorf("unknown pattern %q for column %s",
+			patternName, col.String())
+	}
+
+	// Check if column has a unique constraint
+	hasUnique, err := validator.HasUniqueConstraint(ctx, col)
+	if err != nil {
+		return nil, fmt.Errorf("failed to check unique constraint for %s: %w",
+			col.String(), err)
+	}
+
+	processor := NewColumnProcessor(tx, col, dataType, gen, a.dictionary,
+		database.DefaultBatchSize, hasUnique)
+
+	var lastProgress int64
+	return processor.Process(ctx, func(processed int64) {
+		if !a.quiet && processed-lastProgress >= 10000 {
+			fmt.Printf("  %d rows processed\n", processed)
+			lastProgress = processed
+		}
+	})
+}
+
+// processJSONColumn processes a JSON/JSONB column with multiple path patterns.
+func (a *Anonymizer) processJSONColumn(
+	ctx context.Context,
+	tx *sql.Tx,
+	col errors.ColumnRef,
+	dataType string,
+	colConfig config.ColumnConfig,
+) (*ProcessResult, error) {
+	// Build generator map for each JSON path
+	generators := make(map[string]generator.Generator)
+	for _, jp := range colConfig.JSONPaths {
+		gen, ok := a.generators.Get(jp.Pattern)
+		if !ok {
+			return nil, fmt.Errorf("unknown pattern %q for JSON path %s in column %s",
+				jp.Pattern, jp.Path, col.String())
+		}
+		generators[jp.Path] = gen
+	}
+
+	processor := NewJSONColumnProcessor(
+		tx, col, dataType, colConfig.JSONPaths, generators,
+		a.dictionary, database.DefaultBatchSize, a.quiet)
+
+	var lastProgress int64
+	return processor.Process(ctx, func(processed int64) {
+		if !a.quiet && processed-lastProgress >= 10000 {
+			fmt.Printf("  %d rows processed\n", processed)
+			lastProgress = processed
+		}
+	})
 }

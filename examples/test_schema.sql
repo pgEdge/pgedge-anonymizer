@@ -39,6 +39,8 @@ CREATE TABLE public.customers (
     date_of_birth DATE,
     ssn VARCHAR(20),
     passport_number VARCHAR(20),
+    -- JSONB column containing nested PII for testing JSON path anonymization
+    profile_data JSONB,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     is_active BOOLEAN DEFAULT TRUE,

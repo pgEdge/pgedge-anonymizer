@@ -31,6 +31,22 @@ columns:
   - column: public.customers.passport_number
     pattern: PASSPORT
 
+  # Customer Profile JSONB data (nested PII)
+  - column: public.customers.profile_data
+    json_paths:
+      # Simple nested fields
+      - path: $.alt_email
+        pattern: EMAIL
+      - path: $.work_phone
+        pattern: US_PHONE
+      # Array of emergency contacts - anonymize all entries
+      - path: $.emergency_contacts[*].name
+        pattern: PERSON_NAME
+      - path: $.emergency_contacts[*].phone
+        pattern: US_PHONE
+      - path: $.emergency_contacts[*].email
+        pattern: EMAIL
+
   # Address PII
   - column: public.addresses.street_address
     pattern: ADDRESS
