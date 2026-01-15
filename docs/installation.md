@@ -1,6 +1,6 @@
 # Installation
 
-pgEdge Anonymizer modifies data in a PostgreSQL database, replacing sensitive 
+pgEdge Anonymizer modifies data in a PostgreSQL database, replacing sensitive
 data with realistic but fake values while maintaining referential integrity,
 providing your development team with data for experimentation and testing.
 
@@ -10,14 +10,13 @@ providing your development team with data for experimentation and testing.
     should not be applied to data in a production environment. Anonymizing is
     not reversible.
 
-You can install pgEdge Anonymizer with 
-[pgEdge Enterprise Postgres](https://docs.pgedge.com/enterprise/) packages 
-or build from Anonymizer with source code from the 
+You can install pgEdge Anonymizer with
+[pgEdge Enterprise Postgres](https://docs.pgedge.com/enterprise/) packages
+or build Anonymizer from source code from the
 [pgEdge repository](https://github.com/pgEdge/pgedge-anonymizer).
 
 pgEdge Anonymizer is open-source and licensed with the
-[PostgreSQL license](LICENCE.md).  
-
+[PostgreSQL license](LICENCE.md).
 
 ## Prerequisites
 
