@@ -27,6 +27,8 @@ func TestGetTableRowEstimate_handlesNegativeEstimate(t *testing.T) {
 	v := &SchemaValidator{db: db}
 
 	// Simulate reltuples = -1 (should clamp to 0)
+	// Note: This test validates the mock return value, not the SQL logic.
+	// The clamping is performed by PostgreSQL's GREATEST() in the query, not by Go code.
 	mock.ExpectQuery(regexp.QuoteMeta(`SELECT GREATEST(COALESCE(c.reltuples, 0)::bigint, 0)
         FROM pg_class c
         JOIN pg_namespace n ON n.oid = c.relnamespace
