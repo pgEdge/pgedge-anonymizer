@@ -127,7 +127,7 @@ func (v *SchemaValidator) GetTableRowEstimate(ctx context.Context,
 	schema, table string) (int64, error) {
 
 	query := `
-        SELECT COALESCE(c.reltuples, 0)::bigint
+        SELECT GREATEST(COALESCE(c.reltuples, 0)::bigint, 0)
         FROM pg_class c
         JOIN pg_namespace n ON n.oid = c.relnamespace
         WHERE n.nspname = $1 AND c.relname = $2
