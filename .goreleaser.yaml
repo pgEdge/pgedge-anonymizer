@@ -45,6 +45,7 @@ archives:
       - README*
       - CHANGELOG*
       - docs/*
+      - pgedge-anonymizer-patterns.yaml
     format_overrides:
       - goos: windows
         formats:
