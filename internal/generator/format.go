@@ -178,12 +178,12 @@ func (g *FormatGenerator) generateMask() string {
 				result.WriteByte(randomLowerLetter())
 			}
 		case '*':
-			r := randomInt(3)
-			if r == 0 {
+			switch randomInt(3) {
+			case 0:
 				result.WriteByte(randomDigit())
-			} else if r == 1 {
+			case 1:
 				result.WriteByte(randomUpperLetter())
-			} else {
+			default:
 				result.WriteByte(randomLowerLetter())
 			}
 		default:

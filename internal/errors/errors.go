@@ -172,7 +172,7 @@ func (e *AnonymizationError) Error() string {
 		sb.WriteString(e.Column.String())
 	}
 	if e.Row > 0 {
-		sb.WriteString(fmt.Sprintf(" at row %d", e.Row))
+		fmt.Fprintf(&sb, " at row %d", e.Row)
 	}
 	sb.WriteString(": ")
 	sb.WriteString(e.Message)
