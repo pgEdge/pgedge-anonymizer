@@ -1,0 +1,20 @@
+database:
+  host: localhost
+  port: 5432
+  database: myapp
+
+columns:
+  - column: public.users.email
+    pattern: EMAIL
+
+  - column: public.users.phone
+    pattern: US_PHONE
+
+  - column: public.users.ssn
+    pattern: US_SSN
+
+  - column: public.users.first_name
+    pattern: PERSON_FIRST_NAME
+
+  - column: public.users.last_name
+    pattern: PERSON_LAST_NAME
