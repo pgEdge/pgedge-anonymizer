@@ -19,7 +19,6 @@ TAG_VERSION="${ANONYMIZER_BRANCH#v}"
 ARTIFACT_DIR="${ARTIFACT_DIR:-${CWD}/release-artifacts}"
 SRC_DIR="${BUILD_DIR}/pgedge-anonymizer-${TAG_VERSION}"
 RELEASE_URL="https://github.com/pgEdge/pgedge-anonymizer/releases/download/${ANONYMIZER_BRANCH}"
-RAW_URL="https://raw.githubusercontent.com/pgEdge/pgedge-anonymizer/${ANONYMIZER_BRANCH}"
 
 # stage <canonical-local-name> <remote-name> <dest> <url-base>
 stage() {
@@ -51,11 +50,9 @@ prepare() {
   cp -rp "${CWD}/${COMPONENT_NAME}/deb/debian" "$SRC_DIR/"
   cp "${CWD}/${COMPONENT_NAME}"/common/pgedge-anonymizer.yaml "$SRC_DIR/debian/"
 
-  echo "Staging LICENCE.md + patterns..."
-  # LICENCE.md isn't in the GoReleaser archive (files glob is LICENSE*).
-  stage "LICENCE.md" "LICENCE.md" "$SRC_DIR/LICENCE.md" "${RAW_URL}"
-  stage "pgedge-anonymizer-patterns.yaml" "pgedge-anonymizer-patterns.yaml" \
-        "$SRC_DIR/debian/pgedge-anonymizer-patterns.yaml" "${RAW_URL}"
+  echo "Staging LICENCE.md + patterns from the repo checkout..."
+  cp "${CWD}/LICENCE.md" "$SRC_DIR/LICENCE.md"
+  cp "${CWD}/pgedge-anonymizer-patterns.yaml" "$SRC_DIR/debian/pgedge-anonymizer-patterns.yaml"
 
   echo "Installing build dependencies..."
   cd "$SRC_DIR"
