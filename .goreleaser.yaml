@@ -41,7 +41,7 @@ archives:
       {{- if eq .Arch "amd64" }}x86_64
       {{- else }}{{ .Arch }}{{ end }}
     files:
-      - LICENSE*
+      - LICEN[CS]E*
       - README*
       - CHANGELOG*
       - docs/*

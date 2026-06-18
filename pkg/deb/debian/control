@@ -1,0 +1,18 @@
+Source: pgedge-anonymizer
+Section: net
+Priority: optional
+Maintainer: Muhammad Aqeel <muhammad.aqeel@pgedge.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+Homepage: https://github.com/pgEdge/pgedge-anonymizer
+Rules-Requires-Root: no
+
+Package: pgedge-anonymizer
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: pgEdge Anonymizer is a tool for anonymizing Personally Identifiable
+ Information (PII) in PostgreSQL databases to meet GDPR and other regulatory
+ requirements when cloning production data for development purposes.
+ .
+ The tool processes columns specified in a configuration file, applying
+ pattern-based anonymization while maintaining data consistency across tables

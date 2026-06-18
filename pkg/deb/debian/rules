@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+
+%:
+	dh $@
+
+override_dh_builddeb:
+	dh_builddeb -- -Zgzip
+
+override_dh_auto_install:
+	# --- SBOM generation and signing ---
+	mkdir -p debian/tmp/sbom
+	syft dir:$(CURDIR) -o cyclonedx-json > debian/tmp/sbom/pgedge-anonymizer-sbom.json || exit 1
+	KEY_ID=$$(gpg --list-secret-keys --with-colons | awk -F: '/^sec/{print $$5}' | head -n 1); \
+	gpg --armor --detach-sign --local-user "$$KEY_ID" \
+		--output debian/tmp/sbom/pgedge-anonymizer-sbom.json.asc \
+		debian/tmp/sbom/pgedge-anonymizer-sbom.json || exit 1
+	install -D -m 0755 pgedge-anonymizer debian/pgedge-anonymizer/usr/bin/pgedge-anonymizer
+	install -D -m 0644 debian/pgedge-anonymizer.yaml debian/pgedge-anonymizer/etc/pgedge/pgedge-anonymizer.yaml
+	install -D -m 0644 debian/pgedge-anonymizer-patterns.yaml debian/pgedge-anonymizer/etc/pgedge/pgedge-anonymizer-patterns.yaml
+	install -D -m 0644 debian/tmp/sbom/pgedge-anonymizer-sbom.json debian/pgedge-anonymizer/usr/share/pgedge-anonymizer/pgedge-anonymizer-sbom.json
+	install -D -m 0644 debian/tmp/sbom/pgedge-anonymizer-sbom.json.asc debian/pgedge-anonymizer/usr/share/pgedge-anonymizer/pgedge-anonymizer-sbom.json.asc
+	rm -rf debian/tmp/sbom
