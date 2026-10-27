@@ -94,7 +94,7 @@ Throughput:              21367 rows/sec
 
 **Prerequisites**
 
-- Go 1.24 or later
+- Go 1.26.10 or later
 - PostgreSQL (for integration tests)
 - Python 3.12+ (for documentation)
 
