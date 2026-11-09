@@ -52,6 +52,8 @@ install -p -m 0644 %{_builddir}/%{sname}-sbom.json.asc %{buildroot}%{_datadir}/%
 %{_datadir}/%{sname}/%{sname}-sbom.json.asc
 
 %changelog
+* Mon Nov 09 2026 Dave Page <dpage@pgadmin.org> - 1.0.1
+- Update RPM package of pgedge-anonymizer
 * Thu Apr 02 2026 Muhammad Aqeel <muhammad.aqeel@pgedge.com> - 1.0.0
 - Update RPM package of pgedge-anonymizer
 * Mon Dec 22 2025 Muhammad Aqeel <muhammad.aqeel@pgedge.com> - 1.0.0-beta2

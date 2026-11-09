@@ -13,6 +13,6 @@ package version
 
 // Version and BuildTime are set via ldflags at build time.
 var (
-	Version   = "1.0.0"
+	Version   = "1.0.1"
 	BuildTime = "unknown"
 )

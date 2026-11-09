@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.0.1] - 2026-11-09
+
+### Changed
+
+- Building from source now requires Go 1.26.10 or later
+
+### Fixed
+
+- Update the Go toolchain, Go modules (including pgx, `golang.org/x/text`
+  and `golang.org/x/crypto`) and documentation build dependencies to pick
+  up security fixes, closing the open Codacy dependency findings
+
 ## [1.0.0] - 2026-04-02
 
 ### Added
