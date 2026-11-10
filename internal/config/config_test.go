@@ -14,6 +14,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 // TestDatabaseConfigConnectionString tests connection string generation
@@ -618,6 +620,87 @@ func TestIsJSONColumn(t *testing.T) {
 			t.Error("column with empty json_paths should not be JSON column")
 		}
 	})
+}
+
+// TestConnectionStringRoundTrip parses the generated string with pgx
+// itself, so a value containing characters that are special in a
+// keyword/value connection string (backslashes, quotes, whitespace)
+// must reach the driver exactly as configured. pgx drops an unescaped
+// backslash from v5.11.0 onwards, matching libpq.
+func TestConnectionStringRoundTrip(t *testing.T) {
+	passwords := []string{
+		"plain",
+		`back\slash`,
+		`trailing\`,
+		`double\\back`,
+		"it's",
+		`\'`,
+		"with space",
+		"tab\there",
+		"=equals=",
+	}
+	for _, pw := range passwords {
+		t.Run(pw, func(t *testing.T) {
+			db := DatabaseConfig{
+				Host:     "h1",
+				Port:     5432,
+				Database: "my db",
+				User:     `o'brien\x`,
+				Password: pw,
+				SSLMode:  "disable",
+			}
+			pc, err := pgconn.ParseConfig(db.ConnectionString())
+			if err != nil {
+				t.Fatalf("ParseConfig: %v", err)
+			}
+			if pc.Password != pw {
+				t.Errorf("password = %q, want %q", pc.Password, pw)
+			}
+			if pc.User != db.User {
+				t.Errorf("user = %q, want %q", pc.User, db.User)
+			}
+			if pc.Database != db.Database {
+				t.Errorf("database = %q, want %q", pc.Database, db.Database)
+			}
+		})
+	}
+}
+
+// TestConnectionStringSSLRootCertEscaped checks that a Windows path
+// for sslrootcert keeps its backslashes. pgx opens the file during
+// ParseConfig, so the parsed value can't be read back without a real
+// certificate; the escaped form is checked instead.
+func TestConnectionStringSSLRootCertEscaped(t *testing.T) {
+	db := DatabaseConfig{
+		Host:        "h1",
+		Port:        5432,
+		Database:    "db",
+		User:        "u",
+		SSLMode:     "verify-full",
+		SSLRootCert: `C:\certs\ca.crt`,
+	}
+	want := `sslrootcert='C:\\certs\\ca.crt'`
+	if got := db.ConnectionString(); !contains(got, want) {
+		t.Errorf("connection string %q does not contain %q", got, want)
+	}
+}
+
+func TestConnParam(t *testing.T) {
+	tests := []struct {
+		value string
+		want  string
+	}{
+		{"secret", "k=secret"},
+		{"", "k=''"},
+		{"a b", "k='a b'"},
+		{`a\b`, `k='a\\b'`},
+		{"it's", `k='it\'s'`},
+	}
+	for _, tt := range tests {
+		if got := connParam("k", tt.value); got != tt.want {
+			t.Errorf("connParam(%q) = %s, want %s", tt.value, got, tt.want)
+		}
+	}
 }
 
 // helper function

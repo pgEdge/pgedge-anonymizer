@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -129,25 +130,47 @@ func (d *DatabaseConfig) ConnectionString() string {
 		sslmode = "prefer"
 	}
 
-	// Build connection string
-	connStr := fmt.Sprintf("host=%s port=%d dbname=%s user=%s sslmode=%s",
-		host, port, database, user, sslmode)
+	// Build the keyword/value connection string. Every value goes
+	// through connParam, so passwords, paths and names containing
+	// spaces, quotes or backslashes reach the driver unchanged.
+	parts := []string{
+		connParam("host", host),
+		connParam("port", strconv.Itoa(port)),
+		connParam("dbname", database),
+		connParam("user", user),
+		connParam("sslmode", sslmode),
+	}
 
 	if password != "" {
-		connStr += fmt.Sprintf(" password=%s", password)
+		parts = append(parts, connParam("password", password))
 	}
 
 	if d.SSLCert != "" {
-		connStr += fmt.Sprintf(" sslcert=%s", d.SSLCert)
+		parts = append(parts, connParam("sslcert", d.SSLCert))
 	}
 	if d.SSLKey != "" {
-		connStr += fmt.Sprintf(" sslkey=%s", d.SSLKey)
+		parts = append(parts, connParam("sslkey", d.SSLKey))
 	}
 	if d.SSLRootCert != "" {
-		connStr += fmt.Sprintf(" sslrootcert=%s", d.SSLRootCert)
+		parts = append(parts, connParam("sslrootcert", d.SSLRootCert))
 	}
 
-	return connStr
+	return strings.Join(parts, " ")
+}
+
+// connParam formats one keyword/value pair using libpq's quoting rules:
+// a backslash escapes the character after it, and a value that is
+// empty or contains whitespace must be single-quoted. pgx follows the
+// same rules from v5.11.0 onwards, so an unescaped backslash in a
+// password would otherwise be silently dropped. Values that need no
+// escaping are written bare, so ordinary connection strings read as
+// they always have.
+func connParam(key, value string) string {
+	escaped := strings.NewReplacer(`\`, `\\`, `'`, `\'`).Replace(value)
+	if value == "" || strings.ContainsAny(value, " \t\n\r\v\f'\\") {
+		return key + "='" + escaped + "'"
+	}
+	return key + "=" + escaped
 }
 
 // Load loads configuration from the specified file path.
