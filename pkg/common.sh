@@ -6,8 +6,8 @@ export PG_VERSION="${PG_VERSION:-17.7}"
 export PG_MAJOR_VERSION="$(echo "$PG_VERSION" | cut -d. -f1)"
 
 export ANONYMIZER_REPO="https://github.com/pgEdge/pgedge-anonymizer.git"
-export ANONYMIZER_BRANCH="${COMPONENT_BRANCH:-v1.0.0}"
-export ANONYMIZER_VERSION=${COMPONENT_VERSION:-1.0.0}
+export ANONYMIZER_BRANCH="${COMPONENT_BRANCH:-v1.0.1}"
+export ANONYMIZER_VERSION=${COMPONENT_VERSION:-1.0.1}
 export ANONYMIZER_BUILDNUM=${COMPONENT_BUILDNUM:-1}
 
 # DEB only: move a pre-release pretag (e.g. BUILDNUM='beta3_1') into the

@@ -1,7 +1,7 @@
 # pgEdge Anonymizer Makefile
 
 BINARY_NAME=pgedge-anonymizer
-VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "1.0.0-alpha1")
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "1.0.1")
 BUILD_TIME=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 LDFLAGS=-ldflags "-X github.com/pgedge/pgedge-anonymizer/internal/version.Version=$(VERSION) -X github.com/pgedge/pgedge-anonymizer/internal/version.BuildTime=$(BUILD_TIME)"
 
