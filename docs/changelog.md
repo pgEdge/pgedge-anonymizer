@@ -10,8 +10,12 @@ and this project adheres to
 
 ### Fixed
 
-- Update `golang.org/x/text`, `urllib3` and `mkdocs-material` for
-  security fixes
+- Update the Go toolchain to 1.26.10, the Go module dependencies
+  (including `pgx`, `golang.org/x/text` and `modernc.org/sqlite`),
+  and `certifi`, `urllib3` and `mkdocs-material` for security fixes
+- Pass passwords, user names, database names and certificate paths
+  containing spaces, single quotes or backslashes to PostgreSQL
+  unchanged, rather than failing to connect
 
 ## [1.0.0] - 2026-04-02
 
