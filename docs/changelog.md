@@ -8,6 +8,14 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-10
+
+### Changed
+
+- Build DEB packages for Ubuntu 26.04 (resolute)
+- Stop building packages for Debian 11 (bullseye), which has reached
+  end of life
+
 ### Fixed
 
 - Update the Go toolchain to 1.26.10, the Go module dependencies
