@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Update `golang.org/x/text`, `urllib3` and `mkdocs-material` for
+  security fixes
+
 ## [1.0.0] - 2026-04-02
 
 ### Added
