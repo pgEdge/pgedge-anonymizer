@@ -685,6 +685,9 @@ func TestConnectionStringSSLRootCertEscaped(t *testing.T) {
 	}
 }
 
+// TestConnParam checks connParam's output directly: plain values are
+// written bare, and empty values or ones containing whitespace, single
+// quotes or backslashes are escaped and single-quoted.
 func TestConnParam(t *testing.T) {
 	tests := []struct {
 		value string
